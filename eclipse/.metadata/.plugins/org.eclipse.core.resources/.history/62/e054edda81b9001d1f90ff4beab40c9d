@@ -1,0 +1,28 @@
+package com.example.demo.logic;
+
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.demo.dao.BoardDao;
+
+public class BoardLogic {
+	private static final Logger logger = LoggerFactory.getLogger(BoardLogic.class);
+	
+	// @Autowired
+	private BoardDao boardDao = null;
+
+	public void setBoardDao(BoardDao boardDao) {
+		this.boardDao = boardDao;
+	}
+
+	public List<Map<String, Object>> boardList() {
+		logger.info("boardList 호출");
+		
+		boardDao.boardList();
+		
+		return null;
+	}
+}

@@ -1,0 +1,11 @@
+package com.di;
+
+public class HelloBeanImpl implements HelloBean {
+	String msg = null;
+	
+
+	@Override
+	public String getGreeting(String msg) {
+		return "Spring " + msg;
+	}
+}
