@@ -16,13 +16,23 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<beans:property name="mappings">
 			<beans:props>
-				<beans:prop key="/board/boardList.sp">board-controller</beans:prop>
+				<beans:prop key="/board3/boardList.sp">board-controller</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>				
   	<beans:bean id="board-controller" class="com.example.demo.controller.BoardController">
+  		<beans:property name="methodNameResolver" ref="board-resolver"/>
   		<beans:property name="boardLogic" ref="board-logic" />
   	</beans:bean>
+  	
+  	<beans:bean id="board-resolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<beans:property name="mappings">
+			<beans:props>
+				<beans:prop key="/board3/boardList.sp">boardList</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>	
+  	
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />

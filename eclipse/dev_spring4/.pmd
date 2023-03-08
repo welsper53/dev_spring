@@ -66,10 +66,6 @@
             <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
-            <name>AvoidReassigningParameters</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
             <name>AvoidStringBufferField</name>
             <ruleset>Best Practices</ruleset>
         </rule>
@@ -190,10 +186,6 @@
             <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
-            <name>OneDeclarationPerLine</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
             <name>PositionLiteralsFirstInCaseInsensitiveComparisons</name>
             <ruleset>Best Practices</ruleset>
         </rule>
@@ -251,10 +243,6 @@
         </rule>
         <rule>
             <name>UnusedImports</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>UnusedLocalVariable</name>
             <ruleset>Best Practices</ruleset>
         </rule>
         <rule>
@@ -366,10 +354,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>ClassNamingConventions</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>CodeFormat</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -422,10 +406,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>FieldNamingConventions</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>FinalParameterInAbstractMethod</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -442,18 +422,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>ForLoopsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>ForLoopsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>FormalParameterNamingConventions</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>FormalParameterNamingConventions</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -467,22 +435,6 @@
         </rule>
         <rule>
             <name>IfElseStmtsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>IfElseStmtsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>IfElseStmtsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>IfStmtsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>IfStmtsMustUseBraces</name>
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
@@ -514,10 +466,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>LocalVariableNamingConventions</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>LongVariable</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -527,10 +475,6 @@
         </rule>
         <rule>
             <name>MethodArgumentCouldBeFinal</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>MethodNamingConventions</name>
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
@@ -674,18 +618,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>VariableNamingConventions</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>WhileLoopsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>WhileLoopsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>WhileLoopsMustUseBraces</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -695,14 +627,6 @@
         </rule>
         <rule>
             <name>AvoidCatchingGenericException</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>AvoidDeeplyNestedIfStmts</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>AvoidDeeplyNestedIfStmts</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -738,27 +662,11 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>CognitiveComplexity</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>CollapsibleIfStatements</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>CollapsibleIfStatements</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
             <name>CouplingBetweenObjects</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>CyclomaticComplexity</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>CyclomaticComplexity</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -782,15 +690,7 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>ExcessiveClassLength</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>ExcessiveImports</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>ExcessiveMethodLength</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -811,18 +711,6 @@
         </rule>
         <rule>
             <name>ExcessiveParameterList</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>ExcessiveParameterList</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>ExcessiveParameterList</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>ExcessivePublicCount</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -874,10 +762,6 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>NcssConstructorCount</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>NcssCount</name>
             <ruleset>Design</ruleset>
         </rule>
@@ -886,19 +770,7 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>NcssMethodCount</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>NcssMethodCount</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>NcssObjectCount</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>NcssTypeCount</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -927,10 +799,6 @@
         </rule>
         <rule>
             <name>NoScriptlets</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>NPathComplexity</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -970,27 +838,11 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>StdCyclomaticComplexity</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>SwitchDensity</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
             <name>TooManyFields</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>TooManyFields</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>TooManyFields</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>TooManyMethods</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -1035,10 +887,6 @@
         </rule>
         <rule>
             <name>ApexCSRF</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>AssignmentInOperand</name>
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
@@ -1222,10 +1070,6 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>EmptyCatchBlock</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
             <name>EmptyFinalizer</name>
             <ruleset>Error Prone</ruleset>
         </rule>
@@ -1242,19 +1086,7 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>EmptyIfStmt</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptyIfStmt</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
             <name>EmptyInitializer</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptyStatementBlock</name>
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
@@ -1279,10 +1111,6 @@
         </rule>
         <rule>
             <name>EmptyTryOrFinallyBlock</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptyWhileStmt</name>
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
@@ -1370,10 +1198,6 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>MethodWithSameNameAsEnclosingClass</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
             <name>MisplacedNullCheck</name>
             <ruleset>Error Prone</ruleset>
         </rule>
@@ -1403,10 +1227,6 @@
         </rule>
         <rule>
             <name>NullAssignment</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>OverrideBothEqualsAndHashcode</name>
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>

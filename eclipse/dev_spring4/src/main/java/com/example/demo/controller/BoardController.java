@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import com.example.demo.logic.BoardLogic;
+import com.example.demo.util.HashMapBinder;
 
 /**
  * 요청에 대한 컨트롤러 클래스의 메서드 마다 요청객체와 응답객체를 주입해주는 클래스 메서드 중심의 요청객체와 응답객체를 주입해주는 클래스 왜
@@ -33,14 +35,21 @@ public class BoardController extends MultiActionController {
 	{
 		logger.info("boardList 호출");
 		List<Map<String,Object>> bList = null;
-		bList = boardLogic.boardList();
+		
+		Map<String,Object> pMap = new HashMap<>();
+		
+		HashMapBinder hmb = new HashMapBinder(req);
+		hmb.bind(pMap);
+		
+		bList = boardLogic.boardList(pMap);
 		
 		ModelAndView mav =  new ModelAndView();
-		mav.setViewName("board/boardList");
+		mav.setViewName("board3/boardList");
 		mav.addObject("bList", bList);
 		
 		
 		return mav;
 	}
-
+	
+	
 }

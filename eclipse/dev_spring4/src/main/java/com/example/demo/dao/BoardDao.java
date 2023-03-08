@@ -15,12 +15,12 @@ public class BoardDao {
 		this.sqlSessionTemplate = sqlSessionTemplate;
 	}
 
-	public List<Map<String, Object>> boardList() {
+	public List<Map<String, Object>> boardList(Map<String, Object> pMap) {
 		logger.info("BoardDao.boardList 호출");
 		List<Map<String,Object>> bList = null;
 		
-		bList = sqlSessionTemplate.selectList("boardList", null);
-		logger.info("bList : " + bList.toString());
+		bList = sqlSessionTemplate.selectList("boardList", pMap);
+		logger.info(bList.toString());
 		
 		return bList;
 	}
