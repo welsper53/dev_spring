@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="_insaMap" class="com.example.demo.di.InsaMap">
+		<property name="insaMap">
+			<map>
+				<entry>
+					<key><value>one</value></key>
+					<value>Hi!!!</value>
+				</entry>
+				<entry>
+					<key><value>two</value></key>
+					<value>Have a good Time</value>
+				</entry>
+				<entry>
+					<key><value>three</value></key>
+					<value>Have a nice day</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

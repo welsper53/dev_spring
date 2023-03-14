@@ -12,29 +12,56 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 	
+	<beans:bean id="default-handler-mapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+	<!-- name : 도메인 이름 -->
+	<beans:bean name="/di/insaList.sp" class="com.example.demo.controller.ListController">
+		<!-- name : setter할 전역변수 이름 -->
+		<beans:property name="insaBean2">
+			<beans:list>
+				<beans:value>Hi!!</beans:value>
+				<beans:value>Have a good Time!!!</beans:value>
+				<beans:value>Have a good Day!!!</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	
 	<beans:bean id="url-mapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<beans:property name="mappings">
 			<beans:props>
 				<beans:prop key="/board3/boardList.sp">board-controller</beans:prop>
+				<beans:prop key="/board3/boardDetail.sp">board-controller</beans:prop>
+				<beans:prop key="/board3/jsonBoardList.sp">board-controller</beans:prop>
+				<beans:prop key="/board3/boardInsert.sp">board-controller</beans:prop>
+				<beans:prop key="/board3/boardUpdate.sp">board-controller</beans:prop>
+				<beans:prop key="/board3/boardDelete.sp">board-controller</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>				
+	
   	<beans:bean id="board-controller" class="com.example.demo.controller.BoardController">
   		<beans:property name="methodNameResolver" ref="board-resolver"/>
   		<beans:property name="boardLogic" ref="board-logic" />
   	</beans:bean>
   	
+	<!-- 메소드명 -->
   	<beans:bean id="board-resolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
 		<beans:property name="mappings">
 			<beans:props>
 				<beans:prop key="/board3/boardList.sp">boardList</beans:prop>
+				<beans:prop key="/board3/boardDetail.sp">boardDetail</beans:prop>
+				<beans:prop key="/board3/jsonBoardList.sp">jsonBoardList</beans:prop>
+				<beans:prop key="/board3/boardInsert.sp">boardInsert</beans:prop>
+				<beans:prop key="/board3/boardUpdate.sp">boardUpdate</beans:prop>
+				<beans:prop key="/board3/boardDelete.sp">boardDelete</beans:prop>
 			</beans:props>
 		</beans:property>
 	</beans:bean>	
   	
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- 이미지와 같은 자원을 관리한다 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://Java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- 서버가 다운될때까지 기억한다 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -18,16 +19,23 @@
 	</listener>
 
 	<!-- Processes application requests -->
+	<!-- 싱글톤 패턴 -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		
+		<!-- init-param : servlet요청이 있을 때마다 읽는다 
+			 			  설정한 xml 내 설정을 다시 읽는다 -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
+		<!-- 톰캣 컨테이너가 실행되면서 미리 서블릿을 실행 -->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-		
+	
+	<!-- 확장자(URL)가 .sp로 끝나면 인터셉트한다
+		 ->스프링 컨테이너가 한다 -->
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>*.sp</url-pattern>

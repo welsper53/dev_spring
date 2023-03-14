@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- id : setter할 전역변수 이름 -->
+	<bean id="insa" class="com.example.demo.di.InsaList">
+		<!-- name : setter할 전역변수 이름
+					(InsaMap 내 setInsaMap메소드가 있어야 한다) -->
+		<property name="insaBean">
+			<list>
+				<value>Hi!!</value>
+				<value>Have a good Time!!!</value>
+				<value>Have a good Day!!!</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

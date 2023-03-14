@@ -9,9 +9,11 @@
 	<bean id="message-source" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages_ko_KR"/>
 	</bean>
+	
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 	    <property name="defaultLocale" value="ko">
-	</property></bean>	
+		</property>
+	</bean>	
 	<bean id="board-logic" class="com.example.demo.logic.BoardLogic">
 		<property name="boardDao" ref="board-dao"/>
 	</bean>	

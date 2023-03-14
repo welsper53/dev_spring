@@ -29,9 +29,13 @@ public class HashMapBinder {
 	public void bind(Map<String,Object> pMap) {
 		logger.info("bind 호출");
 		pMap.clear();
+		
+		// 객체들을 집합체 형태로 관리하여 한번에 출력할 수 있게 한다
 		Enumeration<String> en = req.getParameterNames();
 		
+		// boolean hasMoreElements() : 현재 커서 이후에 요소들이 있는지 체크
 		while(en.hasMoreElements()) {
+			// nextElement() : 가리키는 요소 객체를 반환 후 커서를 이동한다
 			String key = en.nextElement();
 			pMap.put(key, req.getParameter(key));
 		}

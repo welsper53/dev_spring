@@ -16,10 +16,9 @@ import com.example.demo.logic.BoardLogic;
 import com.example.demo.util.HashMapBinder;
 
 /**
- * 요청에 대한 컨트롤러 클래스의 메서드 마다 요청객체와 응답객체를 주입해주는 클래스 메서드 중심의 요청객체와 응답객체를 주입해주는 클래스 왜
- * 나만 상속을 받아야 하나요? - 요청객체와 응답객체가 필요하다. 지금은 서블릿이 아닌 대신에 MultiActionController을
- * 상속받았다.
- */
+ * 요청에 대한 컨트롤러 클래스의 메서드 마다 요청객체와 응답객체를 주입해주는 클래스 메서드 중심의 요청객체와 
+ * 응답객체를 주입해주는 클래스 왜 나만 상속을 받아야 하나요? 
+ * - 요청객체와 응답객체가 필요하다. 지금은 서블릿이 아닌 대신에 MultiActionController을 상속받았다. */
 public class BoardController extends MultiActionController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
@@ -29,6 +28,7 @@ public class BoardController extends MultiActionController {
 		this.boardLogic = boardLogic;
 	}
 	
+	// <코드 작성 변천과정>ㄴㄴ
 	// void doGet(req,res) -> ActionForward execute(req,res) -> String execute(req,res)
 	// -> String ~~~(req,res) (<-사용자정의)
 	public ModelAndView boardList(HttpServletRequest req, HttpServletResponse res)

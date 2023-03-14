@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="himCar" class="com.example.demo.di.Sonata" />
+	<bean id="herCar" class="com.example.demo.di.Sonata" />
+<!-- 	<bean id="yourCar" class="com.example.demo.di.Sonata">
+		<constructor-arg index="0" type="int" value="20" /> 							int speed
+		<constructor-arg index="1" type="java.lang.Stirng" value="2023년형 NF소나타" />	String carName
+		<constructor-arg index="2" type="int" value="0" />								int wheelNum
+	</bean> -->
+</beans>
