@@ -5,13 +5,13 @@
     List<Map<String,Object>> bList = null;
     bList = (List<Map<String,Object>>) request.getAttribute("bList");
 
-    //if (bList != null) {
+    if (bList != null) {
         for (int i=0; i<bList.size(); i++) {
             Map<String,Object> rMap = bList.get(i);
             out.print(rMap.get("BM_TITLE") + "<br>");
             out.print(rMap.get("BM_WRITER") + "<br>");
         }
-    //}
+    }
 %>
 <html>
 <head>
