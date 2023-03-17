@@ -25,7 +25,7 @@
 		</beans:property>
 	</beans:bean>
 	
-	
+	<!-- POJO에서 HanlerMapping.java와 같다 -->
 	<beans:bean id="url-mapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<beans:property name="mappings">

@@ -32,12 +32,15 @@ public class MemberController {
         return "redirect:./memberList";
     }
     @GetMapping("memberList")
-    public String memberList(Model model) {
+    public String memberList(Model model, @RequestParam Map<String,Object> pMap) {
         logger.info("memberList 호출");
 
         List<Map<String,Object>> mList = null;
 
+        memberLogic.memberList(pMap);
+        model.addAttribute("mList", mList);
 
-        return "member/memberList";
+        // localhost:8000/jstl/member/memberAction.jsp[webapp]
+        return "forward:/jstl/member/memberAction.jsp";
     }
 }
