@@ -14,7 +14,7 @@ function App({imageUploader}) {
       <Routes>{/* 정확히 그 규칙을 따라달라는 exact={true} */}
         <Route path='/' exact={true} element={<LoginPage />} />
         <Route path='/home' exact={true} element={<HomePage />} />
-        <Route path='/dept' exact={true} element={<DeptPage />} />
+        <Route path='/dept/:gubun' element={<DeptPage imageUploader={imageUploader}/>} />
         <Route path='/auth/kakao/callback' exact={true} element={<KakaoRedirectHandler />} />
         <Route path='/profile' exact={true} element={<Profile/>}/>
         <Route path='/member' exact={true} element={<MemberPage imageUploader={imageUploader}/>}/>
