@@ -1,19 +1,30 @@
 // 상태는 createStore() 안에 있다
+// 상태를 담을 변수 선언
+// 콜백함수를 담을 배열 선언
+/**  send함수 구현 - 파라미터 action
+ * subscribe - 구독발행 모델(handler - 콜백함수)
+ * : subscribe를 통해서 들어온 콜백함수는 handler배열에 담는다
+ * getState함수를 통해서 state값을 반환 받음
+ * return{send,subscribe,getState}
+*/
+// 배치 위치는 index.js <- store 생성
 const createStore = () => {
   let state;  // 상태를 담아두는 저장소
   // 함수를 담아두는 배열 선언
   let handlers = [];
 
-  // 상태를 바꾸는 일을 한다
+  // 상태를 바꾸는 일을 한다 - useSelect 훅
   const send = (action) => {
     console.log("send 호출");
     // 새로운 객체가 만들어진다
     state = worker(state, action);
 
-    handlers.forEach(handler => handler())
+    // 나에게 구독신청한 사람들에게 모두 알림
+    handlers.forEach(handler => handler())  // 전달 받은 함수를 호출해줘
   }
 
-  const subscribe = ((handler) => {
+  const subscribe = ((handler) => {   // useDispatch 훅
+    // 콜백함수
     handlers.push(handler);
   })
 
@@ -27,9 +38,10 @@ const createStore = () => {
     getState, // 함수 - 상태정보를 담은 state 반환해준다
     subscribe,
   }
-}
+} // end of Store
 
 // react-redux에서는 worker가 dispatcher가 된다
+// reducer, dispatch함수
 const worker = (state = { count:0 }, action) => { // state가 undefined 되는것을 방지하기 위해 객체 선언
   // 무엇을 해야 하나요?
   // 상태를 바꾸면 createStore 안에 state의 참조 무결성이 깨진다
@@ -56,6 +68,10 @@ store.subscribe(() => {
 })
 
 // action의 내용은 send에서 만듦
+// 사용자가 버튼을 클릭했을 때 시그널 발생한다
+// - type정해서 value를 store에 전달한다
+// store가 받아서 전역변수로 관리된다
+// - G컴포넌트에서 즉시 바로 사용가능하다
 store.send({type:'increase'});  // 시그널 추가 - action
 store.send({type:'increase'});
 store.send({type: 'decrease'});
