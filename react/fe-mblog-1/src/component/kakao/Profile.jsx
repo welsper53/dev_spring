@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import BlogHeader from '../include/BlogHeader'
 
 const Profile = () => {
   console.log("Profile 호출")
@@ -53,6 +54,7 @@ const Profile = () => {
 
   return (
     <>
+      <BlogHeader />
       <h3>{user_id}</h3>
       <h3>{nickName}</h3>
       <img src={profileImage} alt="프로필이미지"></img>

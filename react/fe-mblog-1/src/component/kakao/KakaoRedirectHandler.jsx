@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const KakaoRedirectHandler = () => {
   // 카카오API 가져올 때 객체명을 Kakao로 해야한다
   // 카카오 객체를 global variable에 등록해주는 코드
-  const {Kakao} = window;
+  //const {Kakao} = window;
 
   // 리액트에서는 location.href나 sendRedirect 대신 사용한다
   const navigate = useNavigate()
@@ -39,7 +39,7 @@ const KakaoRedirectHandler = () => {
       window.Kakao.init(process.env.REACT_APP_KAKAO_API_KEY)
       console.log("토큰값: "+res.data.access_token)
       window.Kakao.Auth.setAccessToken(res.data.access_token);
-      
+
       navigate("/profile")
     } catch (error) {
       console.log(error)

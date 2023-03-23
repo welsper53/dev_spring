@@ -17,6 +17,7 @@
                 AND loc LIKE '%'||#{keyword}||'%'
             </if>
         </where>
+        ORDER BY deptno desc
     </select>
 
     <insert id="deptInsert" parameterType="com.example.mblog1.vo.DeptVO">
@@ -42,7 +43,13 @@
         UPDATE dept SET dname = #{dname}, loc = #{loc}
         <where>
             <if test="deptno != null and deptno > 0">
-                deptno = #{deptno}
+                AND deptno = #{deptno}
+            </if>
+            <if test="filename != null">
+                AND filename = #{filename}
+            </if>
+            <if test="fileurl != null">
+                AND fileurl = #{fileurl}
             </if>
         </where>
     </update>
@@ -50,7 +57,7 @@
     <delete id="deptDelete" parameterType="int">
         DELETE FROM dept
         <where>
-            <if test="value != null and value > 0">
+            <if test="deptno != null and deptno > 0">
                 AND deptno = #{deptno}
             </if>
         </where>
