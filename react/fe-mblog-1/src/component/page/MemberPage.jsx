@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { jsonMemberListDB } from '../../service/dbLogic'
+import { memberListDB } from '../../service/dbLogic'
 
 const MemberPage = ({imageUploader}) => {
   console.log("MemberPage 호출")
@@ -8,7 +8,7 @@ const MemberPage = ({imageUploader}) => {
 
   useEffect(() => {
     const memberList = async() => {
-      const res = await jsonMemberListDB(member)
+      const res = await memberListDB(member)
       console.log(res.data)
     }
 

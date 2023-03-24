@@ -23,7 +23,6 @@ public class MemberLogic {
 
     public int memberInsert(Map<String, Object> pMap) {
         logger.info("memberInsert 호출");
-        logger.info(pMap.toString());
 
         int result = 0;
         result = memberDao.memberInsert(pMap);
@@ -33,12 +32,29 @@ public class MemberLogic {
 
     public List<Map<String,Object>> memberList(Map<String, Object> pMap) {
         logger.info("memberList 호출");
-        logger.info(pMap.toString());
 
         List<Map<String,Object>> mList = null;
 
         mList = memberDao.memberList(pMap);
 
         return mList;
+    }
+
+    public int memberUpdate(Map<String, Object> pMap) {
+        logger.info("memberUpdate 호출");
+
+        int result = 0;
+        result = memberDao.memberUpdate(pMap);
+
+        return result;
+    }
+
+    public int memberDelete(Map<String, Object> pMap) {
+        logger.info("memberDelete 호출");
+
+        int result = 0;
+        result = memberDao.memberDelete(pMap);
+
+        return result;
     }
 }

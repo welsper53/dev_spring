@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/member/*")
+//@RequestMapping("/member/*")
 public class MemberController {
     Logger logger = LoggerFactory.getLogger(MemberController.class);
 

@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mblog1">
+    <insert id="memberInsert" parameterType="map">
+        INSERT INTO member230324 (mem_no
+            <if test="mem_uid!=null and mem_uid.length>0">
+                , mem_uid
+            </if>
+            <if test="mem_pw!=null and mem_pw.length>0">
+                , mem_pw
+            </if>
+            <if test="mem_name!=null and mem_name.length>0">
+                , mem_name
+            </if>
+            <if test="mem_nickname!=null and mem_nickname.length>0">
+                , mem_nickname
+            </if>
+            <if test="mem_email!=null and mem_email.length>0">
+                , mem_email
+            </if>
+            <if test="mem_tel!=null and mem_tel.length>0">
+                , mem_tel
+            </if>
+            <if test="mem_gender!=null and mem_gender.length>0">
+                , mem_gender
+            </if>
+            <if test="mem_birthday!=null and mem_birthday.length>0">
+                , mem_birthday
+            </if>
+        )
+        VALUES (seq_member_no.nextval
+            <if test="mem_uid!=null and mem_uid.length>0">
+                , #{mem_uid}
+            </if>
+            <if test="mem_pw!=null and mem_pw.length>0">
+                , #{mem_pw}
+            </if>
+            <if test="mem_name!=null and mem_name.length>0">
+                , #{mem_name}
+            </if>
+            <if test="mem_nickname!=null and mem_nickname.length>0">
+                , #{mem_nickname}
+            </if>
+            <if test="mem_email!=null and mem_email.length>0">
+                , #{mem_email}
+            </if>
+            <if test="mem_tel!=null and mem_tel.length>0">
+                , #{mem_tel}
+            </if>
+            <if test="mem_gender!=null and mem_gender.length>0">
+                , #{mem_gender}
+            </if>
+            <if test="mem_birthday!=null and mem_birthday.length>0">
+                , #{mem_birthday}
+            </if>
+            )
+    </insert>
+
     <select id="getToday" resultType="string" parameterType="string">
         SELECT to_char(sysdate, 'YYYY-MM-DD') FROM dual
     </select>
 
     <select id="login" parameterType="map" resultType="string">
-        select mem_name from book_member
+        select mem_name from member230324
         <where>
             <if test='mem_id!=null and mem_id.length()>0'>
                 AND mem_id = #{mem_id}
@@ -18,7 +73,7 @@
     </select>
 
     <select id="memberList" parameterType="map" resultType="map">
-        select mem_id, mem_name from book_member
+        select mem_no, mem_name from member230324
         <where>
             <if test='mem_id!=null and mem_id.length()>0'>
                 AND mem_id = #{mem_id}
