@@ -35,6 +35,9 @@ public class RestMemberController {
         return String.valueOf(result);
     }
 
+    // http://localhost:8000/member/memberList
+    // 리액트 프로젝트에서 닉네임 중복검사 시 사용하는 메소드 구현입니다
+    // 리액트에서 넘기는 파라미터는 { MEM_NICKNAME: memInfo[key], type: 'overlap' }
     @GetMapping("memberList")
     public String memberList(@RequestParam Map<String, Object> pMap) {
         logger.info("memberList 호출");
@@ -43,9 +46,16 @@ public class RestMemberController {
         List<Map<String,Object>> mList = new ArrayList<>();
 
         mList = memberLogic.memberList(pMap);
+        logger.info(mList);
 
-        Gson g = new Gson();
-        temp = g.toJson(mList);
+        // 파라미터로 넘어온 쿼리스트링이 회원집합에 존재하면 조회결과가 있다
+        // -> mList.size() == 1 or 0
+        if (mList.size() > 0) {
+            Gson g = new Gson();
+            temp = g.toJson(mList);
+        } else {
+            temp = "0";
+        }
 
         return temp;
     }

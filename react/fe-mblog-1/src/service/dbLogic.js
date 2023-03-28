@@ -119,7 +119,7 @@ export const memberListDB = (member) => {
     try {
       const response = axios({
         method: "GET",
-        url: process.env.REACT_APP_SPRING_IP + "dept/deptList",
+        url: process.env.REACT_APP_SPRING_IP + "member/memberList",
         // GET방식으로 전송 시 쿼리스트링은 header에 담긴다
         params: member,
       });

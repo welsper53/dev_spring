@@ -61,7 +61,7 @@
     </select>
 
     <select id="login" parameterType="map" resultType="string">
-        select mem_name from member230324
+        SELECT mem_name FROM member230324
         <where>
             <if test='mem_id!=null and mem_id.length()>0'>
                 AND mem_id = #{mem_id}
@@ -73,10 +73,13 @@
     </select>
 
     <select id="memberList" parameterType="map" resultType="map">
-        select mem_no, mem_name from member230324
+        SELECT mem_uid, mem_name FROM member230324
         <where>
             <if test='mem_id!=null and mem_id.length()>0'>
                 AND mem_id = #{mem_id}
+            </if>
+            <if test='MEM_NICKNAME!=null and MEM_NICKNAME.length()>0'>
+                AND MEM_NICKNAME = #{MEM_NICKNAME}
             </if>
         </where>
     </select>
