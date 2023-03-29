@@ -52,7 +52,7 @@ const KhSignup = ({authLogic}) => {
     name: "",
     birthday: "",
     hp: "",
-    nickname: "",
+    nickname: null,
     gender: "없음"
   });
 
@@ -177,12 +177,13 @@ const KhSignup = ({authLogic}) => {
     response = await memberListDB(params);
     console.log(response.data)
 
-    if (response.data) {
+    /* Array(1)
+      0: {MEM_UID: 'kiwi', MEM_NAME: '강감찬'} */
+    const data = JSON.stringify(response.data)
+    const jsonDoc = JSON.parse(data)
+
+    if (jsonDoc) {
       console.log('중복')
-      /* Array(1)
-        0: {MEM_UID: 'kiwi', MEM_NAME: '강감찬'} */
-      const data = JSON.stringify(response.data)
-      const jsonDoc = JSON.parse(data)
       console.log(jsonDoc[0].MEM_NAME)
     } else {
       console.log('중복되지않습니다')

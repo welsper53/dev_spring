@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup
-  , createUserWithEmailAndPassword, EmailAuthProvider, sendEmailVerification } from "firebase/auth";
+  , createUserWithEmailAndPassword, EmailAuthProvider, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 //import firebase from 'firebase';
 
 class AuthLogic {
@@ -47,6 +47,31 @@ export const logout = (auth) => {
     resolve(); // 그래서 파라미터는 비웠다
   });
 } // end of logout
+
+
+export const loginEmail = (auth, user) => {
+  console.log(auth)
+  console.log(user.email+", "+user.password)
+
+  return new Promise((resolve, reject) => {
+    signInWithEmailAndPassword(auth, user.email, user.password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log(user)
+
+      resolve(userCredential)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode+", "+errorMessage)
+
+      reject(error)
+    });
+  })
+} // end of loginEmail
+
 
 // 로그인 시도 시 구글 인증인지 깃허브 인증인지 문자열로 넘겨받음
 // 구글 인증인 경우 - Google

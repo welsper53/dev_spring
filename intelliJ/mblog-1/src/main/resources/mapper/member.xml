@@ -78,6 +78,13 @@
             <if test='mem_id!=null and mem_id.length()>0'>
                 AND mem_id = #{mem_id}
             </if>
+    <!--
+        <input type=text id="mem_nickname" value="" />
+        항상 무조건 빈문자열이다
+        form 전송하면 무조건 빈문자열이 있는 상태이다
+        너가 아무것도 입력하지 않아도 null에 걸리지 않는다
+        잡아내려면 문자열이 >0 까지를 비교해야 잡아낼 수 있다
+    -->
             <if test='MEM_NICKNAME!=null and MEM_NICKNAME.length()>0'>
                 AND MEM_NICKNAME = #{MEM_NICKNAME}
             </if>
