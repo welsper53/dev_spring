@@ -17,6 +17,7 @@ import KhSignup from './component/auth/KhSignup';
 import KhLoginPage from './component/auth/KhLoginPage';
 import { onAuthChange } from './service/authLogic';
 import { memberListDB } from './service/dbLogic';
+import EmailVerifiedPage from './component/auth/EmailVerifiedPage';
 
 function App({authLogic, imageUploader}) {
   const navigate = useNavigate()
@@ -39,6 +40,8 @@ function App({authLogic, imageUploader}) {
         ssg.setItem('email', user.email)
 
         const res = await memberListDB({MEM_ID: user.uid, type: 'auth'})
+        console.log(res.data)
+
         // 오라클서버의 회원집합에 uid가 존재하면 - 세션스토리지에 값을 담자
         if (res.data) {
           const temp = JSON.stringify(res.data)
@@ -52,13 +55,14 @@ function App({authLogic, imageUploader}) {
           navigate('/')
           return    // 렌더링 종료
         }
-        // 구글 로그인 했지만 false일 때
-        // if () {
-          
-        // }
-        // 오라클서버의 회원집합에 uid가 존재하지 않으면
+        //구글 로그인을 했지만 false일 때
+        if(!user.emailVerified){
+          //navigate('./login/emailVerified')
+        }
+        //오라클서버의 회원집합에 uid가 존재하지 않으면
         else {
-
+          console.log("해당 구글 계정은 회원가입 대상입니다. 회원가입 부탁드립니다")
+          //navigate('/auth/signup')
         }
       } // end of 사용자 정보가 있을 때
       // 사용자 정보가 없을 때
@@ -84,6 +88,7 @@ function App({authLogic, imageUploader}) {
           <Route path='/login' exact={true} element={<KhLoginPage authLogic={authLogic}/>} />
           {/* <Route path='/auth/signup' exact={true} element={<SignupPage authLogic={authLogic}/>} /> */}
           {<Route path='/login/signup' exact={true} element={<KhSignup authLogic={authLogic}/>} />}
+          <Route path='/auth/emailVerified' exact={true} element={<EmailVerifiedPage authLogic={authLogic} />} />
           <Route path='/repleboard' element={<RepleBoardPage />} />
           <Route path='/dept/:gubun' element={<DeptPage imageUploader={imageUploader}/>} />
           {/* 컴포넌트 함수를 호출하는 것이다 -> 마운트(렌더링) - return호출되었다 */}
@@ -98,3 +103,13 @@ function App({authLogic, imageUploader}) {
 }
 
 export default App;
+
+
+/*
+UserImpl {providerId: 'firebase', proactiveRefresh: ProactiveRefresh, reloadUserInfo: {…}, reloadListener: null, uid: 'y2YBZhMpeqWYD2L9vy13X73dEef2', …}
+accessToken: "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk3OWVkMTU1OTdhYjM1Zjc4MjljZTc0NDMwN2I3OTNiN2ViZWIyZjAiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoi6rmA7Iq57IiYIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FFZEZUcDVBMjNlRFBGZ2xYbndTN2dUbm43bFphXzU2OHVDLWVpZk02dmRCPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2toLTIyMTEyOCIsImF1ZCI6ImtoLTIyMTEyOCIsImF1dGhfdGltZSI6MTY4MDEzMjI4NiwidXNlcl9pZCI6InkyWUJaaE1wZXFXWUQyTDl2eTEzWDczZEVlZjIiLCJzdWIiOiJ5MllCWmhNcGVxV1lEMkw5dnkxM1g3M2RFZWYyIiwiaWF0IjoxNjgwMTMyMjg2LCJleHAiOjE2ODAxMzU4ODYsImVtYWlsIjoic2xhbG9tMDkxNEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMjI3MDgwNzk5OTkzNTQxNzAyNCJdLCJlbWFpbCI6WyJzbGFsb20wOTE0QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.DqPG9atRcOfomcaONxGUWHN5OawCWt1_1pZw3j4xGsWrTnycYQnDuz2pbC_Rj3dFdwzr4rsAI0Vm4JiT_RcdRXkaImx5K_4dSEBLIcFv6VdIvrDbsZI0igaqXjBToPXngxCJxk9LRiCiragfNrK94gkuU2ClOKVr-mYPiCXCaiBGWwcybhsgp1m1u34pW9r-kEUmfu9lbwL0e25PYucizEn3-bkVRcKU8lOV1e3n1vTijKx9t6s-VqzrjXHxRdyOZ1lc5j_B69on_7obAKzYVJO_XOFgKOXYvwCCpQ-D9muuN7AlIxnYdZqTzA-SZkQyZ5uVlTAivq4Q2dD2FHbBrg"
+auth: AuthImpl {app: FirebaseAppImpl, heartbeatServiceProvider: Provider, config: {…}, currentUser: UserImpl, emulatorConfig: null, …}
+displayName: "김승수"
+email: "slalom0914@gmail.com"
+emailVerified: true
+*/
