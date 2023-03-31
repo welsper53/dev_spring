@@ -50,10 +50,14 @@ public class RestMemberController {
 
         // 파라미터로 넘어온 쿼리스트링이 회원집합에 존재하면 조회결과가 있다
         // -> mList.size() == 1 or 0
+        // temp에 문자열이 들어있으면 자바스크립트쪽에서는 true로 판정된다
+        // -> 주의할것 - 자바와 다름
         if (mList.size() > 0) {
             Gson g = new Gson();
             temp = g.toJson(mList);
-        } else {
+        }
+        // mem_uid가 없을 때  - 회원가입 유도 할 것.
+        else {
             temp = "0";
         }
 

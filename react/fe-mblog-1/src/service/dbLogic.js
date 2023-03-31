@@ -164,3 +164,62 @@ export const memberDeleteDB = (mem_no) => {
     }
   });
 };
+
+
+export const uploadFileDB = (file) => {
+  console.log(file);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "reple/fileUpload",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        processData: false,
+        contentType: false,
+        data: file,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
+export const qnaInsertDB = (board) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post", //@RequestBody
+        url: process.env.REACT_APP_SPRING_IP + "reple/qnaInsert",
+        data: board, //post방식으로 전송시 반드시 data속성으로 파라미터 줄것
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const uploadImageDB = (file) => {
+  console.log(file);
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "reple/imageUpload",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        processData: false,
+        contentType: false,
+        data: file,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

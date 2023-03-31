@@ -2,21 +2,22 @@ import React from 'react'
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import BlogHeader from '../include/BlogHeader';
-import KaKaoMap from '../kakao/KaKaoMap';
+import KakaoMap from '../kakao/KaKaoMap'
 import { ContainerDiv, FormDiv, HeaderDiv } from '../styles/FormStyle';
 
 const HomePage = () => {
 	const member = window.localStorage.getItem('member')
-	console.log(JSON.parse(member));
+	console.log(JSON.parse(member))
 	const jsonDoc = JSON.parse(member)
-	console.log(jsonDoc.mem_id+", "+jsonDoc.mem_pw)
+	//console.log(jsonDoc.mem_id + ' , '+ jsonDoc.mem_pw)
 
-  const navigate = useNavigate();
+	const navigate = useNavigate()
 
 	const handleLogin = () => {
 		console.log('로그인 요청')
-    navigate("/login");
+		navigate('/login')
 	}
+
   return (
 	<>
 		<ContainerDiv>
@@ -30,7 +31,7 @@ const HomePage = () => {
 				<hr style={{height:"2px"}} />
 				<div>추천 수업존</div>
 				<hr style={{height:"2px"}} />
-				<div><KaKaoMap /></div>
+				<div><KakaoMap /></div>
 				<div>카카오맵존</div>
 				<hr style={{height:"2px"}} />
 			</FormDiv>

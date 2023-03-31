@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup, createUserWithEmailAndPassword
-  , EmailAuthProvider, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
+  , EmailAuthProvider, sendEmailVerification, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 //import firebase from 'firebase';
 
 class AuthLogic {
@@ -30,10 +30,9 @@ export걸어놔서 외부에서 인스화 가능
 
 // 사용자가 변경되는지 지속적으로 체크하여 변경될 때마다 호출된다
 export const onAuthChange = (auth) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve) => {   // 비동기 서비스 구현
     // 사용자가 바뀌었을 때 콜백함수를 받아서
-    auth.onAuthStateChanged((user) => {
-      //파라미터 주입
+    auth.onAuthStateChanged((user) => {   //파라미터 주입
       resolve(user); //내보내지는 정보 - View계층 - App.jsx
     });
   }); //end of Promise
@@ -53,14 +52,15 @@ export const logout = (auth) => {
   });
 } // end of logout
 
-//이메일과 비번으로 회원가입 신청을 한 경우 로그인 처리하는 함수임
+// 이메일과 비번으로 회원가입 신청을 한 경우 로그인 처리하는 함수임
 // auth - AuthLogic클래스 생성자 getAuth() - auth
-//두번째와세번째 - email, password
+// 두번째와 세번째 - email, password
 export const loginEmail = (auth, user) => {
   console.log(auth)
   console.log(user.email+", "+user.password)
 
   return new Promise((resolve, reject) => {
+    // 파라미터auth는 onAuthChange()의 파라미터인 auth이다
     signInWithEmailAndPassword(auth, user.email, user.password)
     .then((userCredential) => {
       // Signed in
@@ -87,12 +87,13 @@ export const loginGoogle = (auth, googleProvider) => {
 	return new Promise((resolve, reject) => {
     // 제공자의 정보이면 팝업을 띄워서 로그인 진행하도록 유도한다
 		signInWithPopup(auth, googleProvider)    //팝업 열림
-    .then((result) => {
-				const user = result.user;//구글에 등록되어 있는 profile  정보가 담겨있음
-				console.log(user)
-				resolve(user)
-			}
-		).catch(e=> reject(e))
+    .then((result) => {   // 콜백
+      const user = result.user;//구글에 등록되어 있는 profile  정보가 담겨있음
+      console.log(user)
+      
+      resolve(user)   // 인증된 사용자 프로필 정보도 화면 쪽으로 내보낸다
+    })
+    .catch(e=> reject(e))
 	})
 };
 
@@ -108,6 +109,7 @@ export const signupEmail = (auth, user) => {
       .catch((e) => reject(e));
   });
 };
+
 export const linkEmail = (auth, user) => {
   console.log(auth);
   console.log(auth.currentUser);
@@ -130,6 +132,7 @@ export const linkEmail = (auth, user) => {
     */
   });
 };
+
 export const sendEmail = (user) => {
   return new Promise((resolve, reject) => {
     sendEmailVerification(user)
@@ -137,5 +140,16 @@ export const sendEmail = (user) => {
         resolve("해당 이메일에서 인증메세지를 확인 후 다시 로그인 해주세요.");
       })
       .catch((e) => reject(e + ": 인증메일 오류입니다."));
+  });
+};
+
+export const sendResetpwEmail = (auth, email) => {
+  console.log(email);
+  return new Promise((resolve, reject) => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        resolve("비밀번호 변경 이메일을 보냈습니다.");
+      })
+      .catch((e) => reject(e));
   });
 };

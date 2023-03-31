@@ -1,17 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
-import App from './App';
-import { BrowserRouter } from 'react-router-dom';
-import ImageUploader from './service/imageUploader';
 import "@fortawesome/fontawesome-free/js/all.js";
-
-import { Provider } from 'react-redux';
-import rootReducer from './redux/rootReducer';
-import { legacy_createStore } from 'redux';
-import AuthLogic from './service/authLogic';
-import firebaseApp from './service/firebase';
-import { setAuth } from './redux/userAuth/action';
+import "react-quill/dist/quill.snow.css";
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
+import ImageUploader from "./service/imageUploader";
+import { Provider } from "react-redux";
+import { legacy_createStore } from "redux";
+import rootReducer from "./redux/rootReducer";
+import AuthLogic from "./service/authLogic";
+import firebaseApp from "./service/firebase";
+import { setAuth } from "./redux/userAuth/action";
 
 // 리덕스 적용하기
 const store = legacy_createStore(rootReducer);

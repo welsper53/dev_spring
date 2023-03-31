@@ -9,7 +9,7 @@ import { checkPassword, validateBirthdate, validateEmail, validateHp, validateNa
 import { SignupForm, MyH1, MyInput, MyLabel,  MyLabelAb, SubmitButton, MyButton, PwEye, WarningButton} from '../styles/FormStyle';
 
 const KhSignup = ({authLogic}) => {
-  const auth = authLogic.getUserAuth()
+  const auth = authLogic.getUserAuth();
   const userAuth = useSelector(state => state.userAuth);
   //window.location.search는 ?뒤의 쿼리스트링을 가져옴
   //
@@ -161,34 +161,36 @@ const KhSignup = ({authLogic}) => {
   }
   //닉네임 중복확인 
   const overlap = async(key) => {
-    console.log('중복확인 : ' + key);
-    let params;
-    
-    if (key === 'email') {
-      console.log('이메일 중복확인');
-      params = { MEM_EMAIL: memInfo[key], type: 'overlap' }
-    } else {
-      console.log('닉네임 중복확인');
-      params = { MEM_NICKNAME: memInfo[key], type: 'overlap' }
-    } 
-    console.log(params)
-    
-    let response = {data: 0}
-    response = await memberListDB(params);
-    console.log(response.data)
+    console.log('닉네임 중복확인' + key);
+	let params;
+	if(key === 'email'){
+		params = { MEM_EMAIL: memInfo[key], type: 'overlap' }
+	}else{
+		params = { MEM_NICKNAME: memInfo[key], type: 'overlap' }
+	}
+	console.log(params)
+	let response = {data:  0}
+	response = await memberListDB(params);
+	console.log(response.data) 
+	//Array(1)
+	//0: {MEM_UID: 'kiwi', MEM_NAME:'강감찬'}
+	const data = JSON.stringify(response.data)
+	const jsonDoc = JSON.parse(data)
+  if(jsonDoc){
+    console.log(jsonDoc[0].MEM_NAME)
+  }else{
+    console.log('입력한 닉네임은 존재하지 않습니다.')
+  }
+	//닉네임이 존재할 때
+	if(response.data){
 
-    /* Array(1)
-      0: {MEM_UID: 'kiwi', MEM_NAME: '강감찬'} */
-    const data = JSON.stringify(response.data)
-    const jsonDoc = JSON.parse(data)
+	}
+	//닉네임이 없을 때
+	else{
 
-    if (jsonDoc) {
-      console.log('중복')
-      console.log(jsonDoc[0].MEM_NAME)
-    } else {
-      console.log('중복되지않습니다')
-    }
-  } 
+	}
+
+  }//end of overlap 
 
   const validate = (key, e) => {
     let result;
@@ -230,7 +232,6 @@ const KhSignup = ({authLogic}) => {
         }
         console.log(data);
         console.log(addr);
-        console.log(post.zipcode);
         setPost({...post, zipcode:data.zonecode, addr:addr}) ;
         document.getElementById("zipcode").value = data.zonecode;
         document.getElementById("addr").value = addr;
@@ -273,10 +274,11 @@ const KhSignup = ({authLogic}) => {
         MEM_BIRTHDAY: birthday,
         MEM_TEL: memInfo.hp,
         MEM_NICKNAME: memInfo.nickname,
-        MEM_ZIPCODE: post.postNum,
-        MEM_ADDR: post.post,
-        MEM_ADDR_DTL: post.postDetail,
-        MEM_AUTH: (type==='member'?1:2),
+        MEM_ZIPCODE: post.zipcode,
+        MEM_ADDR: post.addr,
+        MEM_ADDR_DTL: post.addrDetail,
+        MEM_STATUS: 0,
+        MEM_AUTH: (type==='member'?'member':'teacher'),
         MEM_GENDER: memInfo.gender
       }
       console.log(datas)
@@ -402,15 +404,6 @@ const KhSignup = ({authLogic}) => {
             onClick={handleSignup} onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
               {'가입하기'}
             </SubmitButton>
-          { 
-            <>
-              <Form.Check type={'checkbox'} id={'checkbox'} name={'checkbox'} style={{margin:'5px'}}
-              label={`정말로 탈퇴하시겠나요?`} onChange={()=>{setReSignCheck(!reSignCheck)}}/>
-              <WarningButton type="button">
-                계정탈퇴
-              </WarningButton>
-            </>
-          }  
         </SignupForm>
       </div>
     </div>
