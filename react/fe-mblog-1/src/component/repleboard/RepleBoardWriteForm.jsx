@@ -7,16 +7,17 @@ import RepleBoardFileInsert from './RepleBoardFileInsert'
 
 const RepleBoardWriteForm = () => {
 	const navigate = useNavigate()
-	const no = sessionStorage.getItem(no);
-	const [title, setTitle] = useState("") //사용자가 입력한 제목 담기
-	const [secret, setSecret] = useState(null) //사용자가 입력한 비번 담기
-	const [content, setContent] = useState("") //사용자가 입력한 내용 담기(태그포함된 값들)
-	const [file_name, setFilename] = useState("") //이미지 말고 첨부파일 이름 담기
-	const [file_size, setFilesize] = useState("") // 이미지 말고 첨부파일 크기 담기
-	//QuillEditor이미지 선택하면 imageUploadDB타면 스프링플젝 pds이미지 업로드
-	//pds에 업로드된 파일을 읽어서 Editor안에 보여줌 imageGet?imageName=woman1.png
-	const [files, setFiles] = useState([])
 
+	const no = sessionStorage.getItem('no');
+	const [title, setTitle] = useState("") 					// 사용자가 입력한 제목 담기
+	const [secret, setSecret] = useState(null) 			// 사용자가 입력한 비번 담기
+	const [content, setContent] = useState("") 			// 사용자가 입력한 내용 담기(태그포함된 값들)
+	const [file_name, setFilename] = useState("") 	// 이미지 말고 첨부파일 이름 담기
+	const [file_size, setFilesize] = useState("") 	// 이미지 말고 첨부파일 크기 담기
+
+	// QuillEditor이미지 선택하면 imageUploadDB타면 스프링플젝 pds이미지 업로드
+	// pds에 업로드된 파일을 읽어서 Editor안에 보여줌 imageGet?imageName=woman1.png
+	const [files, setFiles] = useState([])
 	const quillRef = useRef()
 	const fileRef = useRef()
 
@@ -27,12 +28,13 @@ const RepleBoardWriteForm = () => {
 	const handleSecret = useCallback((e) => {
 		setSecret(e)
 	},[])
-	const handleContent = useCallback((value) => {//QuillEditor에서 담김 - 태그포함된 정보
+	const handleContent = useCallback((value) => {	// QuillEditor에서 담김 -> 태그포함된 정보
 		setContent(value)
 	},[])
+
 	const boardInsert = async() => {
 		const board = {
-			qna_bno: 0, //오라클 자동채번 하는 시퀀스 사용함
+			qna_bno: 0, 					// 오라클 자동채번 하는 시퀀스 사용함
 			qna_title: title,
 			qna_content: content,
 			qna_type: '양도',
@@ -40,8 +42,10 @@ const RepleBoardWriteForm = () => {
 			qna_hit: 0,
 			mem_no: no
 		}
+
 		const res = await qnaInsertDB(board)
 		console.log(res)
+
 		//window.location.replace("/board")
 		navigate("/board")
 	}
@@ -49,22 +53,29 @@ const RepleBoardWriteForm = () => {
 	const handleChange = async (event) => {
 		console.log('첨부파일 선택'+event.target.value);
 		//console.log(fileRef.current.value);
+
 		//fileRef에서 가져온 값중 파일명만 담기
 		const str = fileRef.current.value.split('/').pop().split('\\').pop()
 		setFilename(str)
 		console.log(str);
+
 		//선택한 파일을 url로 바꾸기 위해 서버로 전달할 폼데이터 만들기
 		const formData = new FormData()
 		const file = document.querySelector("#file-input").files[0]
 		formData.append("file_name", file)
+
 		const res = await uploadFileDB(formData)
 		console.log(res.data)
+
 		const fileinfo = res.data.split(',')
 		console.log(fileinfo)
 	}
+
 	const handleFiles = () => {
 
 	}
+
+
   return (
 	<>
       <ContainerDiv>

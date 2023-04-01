@@ -25,17 +25,20 @@ import RepleBoardWriteForm from './component/repleboard/RepleBoardWriteForm';
 
 function App({authLogic, imageUploader}) {
   console.log('App')
-  //화면을 전환시킬 때 - window.location.href 차이점 - 새로고침 요청발생 - 가상돔 사용하지 않음
-  const navigate = useNavigate() //가상돔 사용됨
-  const dispatch = useDispatch() //허브 -  action.type(switch-선택), action.payload(내용)
+
+  //화면을 전환시킬 때 - window.location.href 차이점 -> 새로고침 요청발생 - 가상돔 사용하지 않음
+  const navigate = useNavigate() // 가상돔 사용됨
+  const dispatch = useDispatch() // 허브 - action.type(switch-선택), action.payload(내용)
+
   const ssg = sessionStorage;
   const toastStatus = useSelector(state => state.toastStatus)//store에 값을 접근할 때
 
-  useEffect (()=>{ //의존성 배열 - 의존성 배열에 있는 변수가 함수가 훅이 변할때 다시 호출 가능함
+  useEffect (()=>{ //의존성 배열 -> 의존성 배열에 있는 변수가 함수가 훅이 변할때 다시 호출 가능함
     console.log('effect')
     //dispatch(setToastMsg('회원가입 하세요'))
     const asyncDB = async() => {//함수 선언 - memberListDB호출
       console.log('asyncDB')
+
       const auth = authLogic.getUserAuth()
       //현재 인증된 사용자 정보를 가져온다 
       const user = await onAuthChange(auth)
@@ -47,8 +50,9 @@ function App({authLogic, imageUploader}) {
       if (user) {
         console.log('user정보가 있을 때')
 
-        //세션스토리지에 이메일 주소가 등록됨 - 단 구글로그인이 되어있는 상태일때만
+        //세션스토리지에 이메일 주소가 등록됨 <- 단 구글로그인이 되어있는 상태일때만
         ssg.setItem('email', user.email)
+        
         const res = await memberListDB({mem_uid: user.uid, type: 'auth'})
         console.log(res.data)
 

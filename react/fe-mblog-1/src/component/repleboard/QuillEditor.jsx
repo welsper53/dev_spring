@@ -5,8 +5,8 @@ import { uploadImageDB } from '../../service/dbLogic';
 
 
 const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
-    console.log(files);
-    console.log(Array.isArray(files));//array
+    console.log(files);     // 원본파일
+    console.log(Array.isArray(files));    // array
 
     //const dispatch = useDispatch();
     const imageHandler = useCallback(() => {
@@ -27,22 +27,28 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
             const file = input.files[0];
             const fileType = file.name.split('.');
             console.log(fileType);
+
             if(!fileType[fileType.length-1].toUpperCase().match('JPG')&&
-            !fileType[fileType.length-1].toUpperCase().match('PNG')&&
-            !fileType[fileType.length-1].toUpperCase().match('JPEG')) {
+                !fileType[fileType.length-1].toUpperCase().match('PNG')&&
+                !fileType[fileType.length-1].toUpperCase().match('JPEG')) {
                 console.log("jpg png jpeg형식만 지원합니다.");
             }
+
             formData.append("image", file); // 위에서 만든 폼데이터에 이미지 추가 - 415
+
             for (let pair of formData.entries()) {
                 console.log(pair[0], pair[1]); 
             }
+
             // 폼데이터를 서버에 넘겨 multer로 이미지 URL 받아오기
             const res = await uploadImageDB(formData);
             files.push(res.data)
-            console.log(res.data);//XXX.png ===>man21.png
+            console.log(res.data);  //XXX.png ===>man21.png
+
             if (!res.data) {
                 console.log("이미지 업로드에 실패하였습니다.");
             }
+
             const url = process.env.REACT_APP_SPRING_IP+`reple/imageGet?imageName=${res.data}`;
             const quill = quillRef.current.getEditor();
             /* ReactQuill 노드에 대한 Ref가 있어야 메서드들을 호출할 수 있으므로
@@ -71,9 +77,6 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
             
         }, [quillRef, files]);
         
-
-
-
     const modules = useMemo(
         () => ({
         toolbar: { // 툴바에 넣을 기능들을 순서대로 나열하면 된다.
@@ -94,9 +97,12 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
             },
         },
     }), [imageHandler])
+
+
     useEffect(()=>{
         console.log('QuillEditor useEffect');
     },[])
+
     const formats = [
         //'font',
         'header',
@@ -105,6 +111,7 @@ const QuillEditor = ({ value, handleContent, quillRef, files, handleFiles}) => {
         'link', 'image',
         'align', 'color', 'background',        
     ]
+
 
     return (
         <div style={{height: "550px", display: "flex", justifyContent: "center", padding:"0px"}}>
