@@ -14,10 +14,13 @@ public class RepleBoardLogic {
 	Logger logger = LogManager.getLogger(RepleBoardLogic.class);
 	@Autowired
 	private RepleBoardDao repleBoardDao = null;
+
 	public List<Map<String, Object>> qnaList(Map<String, Object> pMap) {
-		logger.info("boardList호출 성공");
+		logger.info("qnaList호출 성공");
 		List<Map<String, Object>> bList = null;
+
 		bList = repleBoardDao.qnaList(pMap);
+
 		return bList;
 	}
 	public int qnaInsert(Map<String, Object> pMap) {

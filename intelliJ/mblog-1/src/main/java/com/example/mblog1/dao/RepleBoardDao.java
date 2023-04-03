@@ -14,12 +14,16 @@ public class RepleBoardDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate = null;
 	Logger logger = LogManager.getLogger(RepleBoardDao.class);
+
 	public List<Map<String, Object>> qnaList(Map<String, Object> pMap) {
-		logger.info("boardList 호출");
+		logger.info("qnaList 호출");
 		List<Map<String, Object>> bList = null;
+
 		bList = sqlSessionTemplate.selectList("qnaList", pMap);
+
 		return bList;
 	}
+
 	public int qnaInsert(Map<String, Object> pMap) {
 		logger.info("qnaInsert 호출");
 		int result = 0;

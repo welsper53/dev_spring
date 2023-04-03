@@ -4,12 +4,43 @@
 	<select id="qnaList" parameterType="java.util.HashMap" resultType="map">
 		SELECT
 		        q.qna_bno, q.qna_title, q.qna_content
-		       ,q.qna_type, q.qna_hit, q.qna_date
-		       ,m.mem_name
+		       ,q.qna_type, q.qna_hit, q.qna_date, q.qna_secret
+		       ,m.mem_name, m.mem_no
 		  FROM qna q, member230324 m
 		WHERE q.mem_no = m.mem_no
-	</select>	 
-<!-- 
+		<!-- KhMyFilter 조건검색 시 사용 -->
+		<if test='qna_type!=null and qna_type.equals("전체")'>
+		 	AND 1 = 1
+		</if>
+		<if test='qna_type!=null and qna_type.equals("양도")'>
+		 	AND q.qna_type = #{qna_type}
+		</if>
+		<if test='qna_type!=null and qna_type.equals("수업")'>
+		 	AND q.qna_type = #{qna_type}
+		</if>
+		<!-- 회원고유번호별 조건검색 시 사용 -->
+		<if test='mem_no != null'>
+			AND m.mem_no = #{mem_no}
+		</if>
+		<!-- 글번호 조건검색 시 사용 -->
+		<if test='qna_bno != null'>
+			AND q.qna_bno = #{qna_bno}
+		</if>
+		<if test='content != null'>
+			<choose>
+				<when test='condition!=null and condition.equals("제목")'>
+					AND q.qna_title LIKE '%'||#{content}||'%'
+				</when>
+				<when test='condition!=null and condition.equals("내용")'>
+					AND q.qna_content LIKE '%'||#{content}||'%'
+				</when>
+				<when test='condition!=null and condition.equals("작성자")'>
+					AND m.mem_name LIKE '%'||#{content}||'%'
+				</when>
+			</choose>
+		</if>
+	</select>
+<!--
 @RequestParam - Map타입이 올 수있다 - GET방식 요청 - 요청 header담김 - 인터셉트 - 캐시에 있는 정보가 다시 출력될수 있다. 
 :문제점: 노출 -URL - 보안취약 - 조회
 @RequestBody - POST방식 요청 - 단위테스트 불가함 -그러니까 postman 테스트 가능함 - 요청 body담김 - 인터셉트 불가함 - 무조건 서버로 전달
@@ -35,7 +66,25 @@ qna_secret 에는 비번을 입력 받음
 		              , qna_content, qna_type, qna_secret
 		              , qna_hit, qna_date)
 		         VALUES(qna_seq.nextval,#{mem_no},#{qna_title}
-		               ,#{qna_content},'양도', #{qna_secret}
-		               ,#{qna_hit}, to_char(sysdate,'YYYY-MM-DD'))
-	</insert>	
+		               ,#{qna_content}, #{qna_type}, #{qna_secret}
+		               , 0, to_char(sysdate,'YYYY-MM-DD'))
+	</insert>
+
+	<update id="qnaUpdate" parameterType="map">
+		UPDATE qna SET qna_title = #{qna_title}, qna_content = #{qna_content}
+		<where>
+			<if test="qna_title!=null and qna_title.length>0">
+				AND qna_title = #{qna_title}
+			</if>
+		</where>
+	</update>
+
+	<delete id="qnaDelete" parameterType="int">
+		DELETE FROM qna
+		<where>
+			<if test='qna_bno!=null and qna_bno.length>0'>
+				AND qna_bno = #{qna_bno}
+			</if>
+		</where>
+	</delete>
 </mapper>

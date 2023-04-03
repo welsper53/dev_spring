@@ -184,13 +184,19 @@ public class RepleBoardController {
         String temp = filename;
         return temp;
     }
+
+    // http://localhost:8000/reple/qnaList?content=제목
+    // http://localhost:8000/reple/qnaList?content=제목&condition=작성자
     @GetMapping("qnaList")
     public String qnaList(@RequestParam Map<String,Object> pMap) {
         logger.info("qnaList호출");
+        logger.info("pMap ===> " + pMap);
         List<Map<String,Object>> bList = null;
         bList = repleBoardLogic.qnaList(pMap);
+
         Gson g = new Gson();
         String temp = g.toJson(bList);
+
         return temp;
     }
 }

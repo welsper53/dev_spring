@@ -22,6 +22,9 @@ import FindEmailPage from './component/auth/FindEmailPage';
 import ResetPwdPage from './component/auth/ResetPwdPage';
 import RepleBoardDetail from './component/repleboard/RepleBoardDetail';
 import RepleBoardWriteForm from './component/repleboard/RepleBoardWriteForm';
+import KhQnAListPage from './component/repleboard/KhQnAListPage';
+import KhQnADetailPage from './component/repleboard/KhQnADetailPage';
+import KhQnAWriteForm from './component/repleboard/KhQnAWriteForm';
 
 function App({authLogic, imageUploader}) {
   console.log('App')
@@ -52,7 +55,7 @@ function App({authLogic, imageUploader}) {
 
         //세션스토리지에 이메일 주소가 등록됨 <- 단 구글로그인이 되어있는 상태일때만
         ssg.setItem('email', user.email)
-        
+
         const res = await memberListDB({mem_uid: user.uid, type: 'auth'})
         console.log(res.data)
 
@@ -111,6 +114,13 @@ function App({authLogic, imageUploader}) {
           <Route path='/reple/boarddetail/*'  element={<RepleBoardDetail  />} />
           <Route path='/reple/boardwrite' exact={true}  element={<RepleBoardWriteForm  />} />
           <Route path='/dept/:gubun' element={<DeptPage  imageUploader={imageUploader} />} />
+
+          <Route path='/qna/list' exact={true} element={<KhQnAListPage  />} />
+          <Route path='/qna/detail/*'  element={<KhQnADetailPage  />} />
+          <Route path='/qna/write/*' element={<KhQnAWriteForm authLogic={authLogic}  />} />
+          {/* 해시값 처리 - useParams() 훅 사용 */}
+          <Route path='/qna/update/:bno' exact={true}  element={<KhQnAWriteForm  />} />
+
           {/* 컴포넌트 함수를 호출하는 것이다 - 마운트 - return호출되었다 */}
           <Route path='/deptdetail/:deptno' element={<DeptDetail  imageUploader={imageUploader} />} />
           <Route path='/auth/kakao/callback' exact={true} element={<KakaoRedirectHandler />} />
