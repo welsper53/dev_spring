@@ -37,8 +37,19 @@ public class RepleBoardController {
         logger.info("qnaInsert");//해당 메소드 호출 여부 찍어보기
         logger.info(pMap);//리액트 화면에서 넘어온 값 출력해보기
         int result = 0;
+
+        // 회원번호 컬럼을 int타입으로 변경하지 않으면 부적합 열유형 111에러메시지 - 다 이 문제
+        // Map, List : Object 주의할 것 - 부적합한 열유형 setNull(111)
+        if (pMap.get("mem_no") != null) {
+            // NumberFormatException 원인이 된다
+            int mem_no = Integer.parseInt(pMap.get("mem_no").toString());
+            pMap.put("mem_no", mem_no);
+        }
+
         result = repleBoardLogic.qnaInsert(pMap);
-        return String.valueOf(result);
+        String qna_bno = Integer.toString(result);
+
+        return qna_bno;
     }
 
     @GetMapping("imageGet")
@@ -46,7 +57,7 @@ public class RepleBoardController {
         //imageName정보는 공통코드로 제공된 QuillEditor.jsx에서 파라미터로 넘어오는 값임
         //imageUpload메소드에서는 업로드된 파일정보(파일명, 파일크기)가 리턴 됨
         String b_file = req.getParameter("imageName");//get방식으로 넘어온
-        logger.info("imageGet 호출 성공===>"+b_file);//XXX.png
+        logger.info("imageGet 호출 성공 ===> "+b_file);//XXX.png
 
         //톰캣 서버의 물리적인 위치
         String filePath = "D:\\dev_spring\\intelliJ\\mblog-1\\src\\main\\webapp\\pds"; // 절대경로.
@@ -58,7 +69,7 @@ public class RepleBoardController {
 
         //실제 업로드된 파일에 대한 마임타입을 출력해줌
         String mimeType = req.getServletContext().getMimeType(file.toString());
-        logger.info(mimeType);//image, video, text
+        logger.info("mimeType : " + mimeType);//image, video, text
 
         if(mimeType == null){//마임타입이 널이면
             //아래 속성값으로 마임타입을 설정해줌
@@ -116,46 +127,21 @@ public class RepleBoardController {
         return null;
     }// end of imageGet
 
+    // QuillEditor에서 선택한 이미지를 mblog_file테이블에 insert 해보자
+    // 왜 이런 수업을 준비했나? - myBatis에서 insert태그의 역할을 한다
+    // - 채번한 숫자를 캐시에 담아준다
+    // 그런데 select가 아니라서 resultType 사용할 수 없다 -> 프로시저 사용
+    // resultType은 불가능하니까 있는 건 parameterType뿐이다 - 매개변수에 값을 담아준다
+    // TestParam.java -> HashMapBinder 설계 파라미터에 값을 담아준다 - 중급으로 가는 길이다 ->
     @PostMapping("imageUpload")
     public Object imageUpload(MultipartHttpServletRequest mRequest,@RequestParam(value="image", required=false) MultipartFile image) {
         logger.info("imageUpload 호출 성공");
-        // 사용자가 선택한 파일 이름 담기
-        String filename = null;
 
-        if(!image.isEmpty()) {
-            filename = image.getOriginalFilename();
+        String filename = repleBoardLogic.imageUpload(image);
 
-            // 이미지에 대한 업로드이므로 첨부파일 크기 계산은 하지 않음
-            // 스프링프로젝트가 바라보는 물리적인 위치 정보
-            String saveFolder = "D:\\dev_spring\\intelliJ\\mblog-1\\src\\main\\webapp\\pds";
-            String fullPath = saveFolder+"\\"+filename;
-
-            try {
-                // File객체는 파일명을 객체화 해주는 클래스임
-                // -> 생성되었다고 해서 실제 파일까지 생성되는 것이 아님
-                File file = new File(fullPath);
-                byte[] bytes = image.getBytes();
-
-                // outstream반드시 생성해서 파일정보를 읽어서 쓰기를 처리해줌
-                // BufferedOutputStream은 필터 클래스이지 실제 파일 쓸수 없는 객체
-                // => 실제 파일 쓰기가 가능한 클래스가 FileOutputStream임
-                //    : 생성자 파라미터에 파일 정보 담기
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-                bos.write(bytes);   // bos : 주소번지
-
-                // 파일쓰기와 관련 위변조 방지 위해 사용후 반드시 닫을 것
-                bos.close();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }
-
-        // 리턴 값으로 선택한 이미지 파일명을 넘겨서
-        // 사용자 화면에 첨부된 파일명을 열거해 주는데 사용할 것임
-        String temp = filename;
-
-        return temp;
+        return filename;
     }
+
     @PostMapping("fileUpload")
     public Object fileUpload(MultipartHttpServletRequest mRequest,@RequestParam(value="file_name", required=false) MultipartFile file_name) {
         logger.info("fileUpload 호출 성공");
@@ -198,5 +184,18 @@ public class RepleBoardController {
         String temp = g.toJson(bList);
 
         return temp;
+    }
+
+    @GetMapping("qnaDelete")
+    public int qnaDelete(int qna_bno) {
+        logger.info("qnaDelete 호출");
+        logger.info("qna_bno ===> " + qna_bno);
+
+        int result = 0;
+
+        result = repleBoardLogic.qnaDelete(qna_bno);
+        logger.info(result);
+
+        return result;
     }
 }

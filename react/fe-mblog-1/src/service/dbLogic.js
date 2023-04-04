@@ -238,6 +238,7 @@ export const qnaListDB = (board) => {
 
 export const qnaInsertDB = (board) => {
   console.log("qnaInsertDB 호출")
+  console.log(board)    // fileNames = ['man1.png', 'man2.png', ...]
 
   return new Promise((resolve, reject) => {
     try {

@@ -39,6 +39,7 @@
 				</when>
 			</choose>
 		</if>
+		ORDER BY q.qna_bno desc
 	</select>
 <!--
 @RequestParam - Map타입이 올 수있다 - GET방식 요청 - 요청 header담김 - 인터셉트 - 캐시에 있는 정보가 다시 출력될수 있다. 
@@ -61,7 +62,7 @@ qna_secret 에는 비번을 입력 받음
 작성자는 입력 받도록 화면을 그려야 할까요?
 아님 자동으로 결정할 수 있는 건가요?
  -->
-	<insert id="qnaInsert" parameterType="map">
+	<insert id="qnaInsert" parameterType="map" useGeneratedKeys="true" keyColumn="qna_bno" keyProperty="qna_bno">
 		INSERT INTO qna(qna_bno, mem_no, qna_title
 		              , qna_content, qna_type, qna_secret
 		              , qna_hit, qna_date)
@@ -69,6 +70,8 @@ qna_secret 에는 비번을 입력 받음
 		               ,#{qna_content}, #{qna_type}, #{qna_secret}
 		               , 0, to_char(sysdate,'YYYY-MM-DD'))
 	</insert>
+
+
 
 	<update id="qnaUpdate" parameterType="map">
 		UPDATE qna SET qna_title = #{qna_title}, qna_content = #{qna_content}
@@ -80,11 +83,41 @@ qna_secret 에는 비번을 입력 받음
 	</update>
 
 	<delete id="qnaDelete" parameterType="int">
-		DELETE FROM qna
-		<where>
-			<if test='qna_bno!=null and qna_bno.length>0'>
-				AND qna_bno = #{qna_bno}
-			</if>
-		</where>
+		DELETE FROM qna WHERE qna_bno = #{qna_bno}
 	</delete>
+
+
+<!--==================================================================================-->
+
+	<!-- 첨부파일 -->
+
+	<select id="fileList" parameterType="map" resultType="map">
+		SELECT file_name, file_size
+		FROM mblog_file
+		WHERE qna_bno = #{qna_bno}
+	</select>
+
+	<insert id="fileInsert" parameterType="map">
+		INSERT INTO mblog_file (file_no, file_path, file_name, file_size)
+		VALUES (mblog_file_seq.nextval, #{file_path}, #{file_name}, #{file_size})
+	</insert>
+
+	<update id="fileUpdate" parameterType="list">
+		<!--
+			여러 컬럼을 UPDATE 시 'foreach' 태그를 사용한다
+			collection:
+			item:
+			separator:
+			open:
+			close:
+		-->
+		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+			UPDATE mblog_file
+			SET board_type = 'qna'
+			, qna_bno = #{item.qna_bno}
+			WHERE file_name = LTRIM(#{item.file_name})
+		</foreach>
+	</update>
+
+	<!--==================================================================================-->
 </mapper>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useCallback } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
@@ -30,8 +30,8 @@ const KhQnAWritePage = ({authLogic}) => {   // props로 넘어온 값 즉시 구
   },[]);
 
   const handleFiles = useCallback((value) => {
-    setFiles([...files, value]);
-  },[files]);
+    setFiles([...files, value]);    // 깊은 복사
+  },[files]);  // [m.png, m1.png, m2.png]
 
   const handleTitle = useCallback((e) => {
     setTitle(e);
@@ -51,7 +51,8 @@ const KhQnAWritePage = ({authLogic}) => {   // props로 넘어온 값 즉시 구
       qna_content: content,
       qna_secret: (secret?'true':'false'),
       qna_type: tTitle,
-      mem_no: sessionStorage.getItem('no')
+      mem_no: sessionStorage.getItem('no'),
+      fileNames: files,
     } // 사용자가 입력한 값 넘기기 -> @RequestBody로 처리된다
 
     const res = await qnaInsertDB(board)
@@ -60,6 +61,16 @@ const KhQnAWritePage = ({authLogic}) => {   // props로 넘어온 값 즉시 구
     // 성공 시 페이지 이동 처리
     navigate('/qna/list')
   }
+
+  useEffect(() => {
+    for (let i=0; i<files.length; i++) {
+      if (!content.match(files[i])) {
+        console.log(files)
+
+        setFiles(files.filter(file => file != file[i]))
+      }
+    }
+  })
 
 
   return (

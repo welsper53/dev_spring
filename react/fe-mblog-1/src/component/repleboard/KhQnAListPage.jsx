@@ -20,7 +20,8 @@ const KhQnAListPage = ({authLogic}) => {
   // URL주소에 한글이 있을 때
   const search = decodeURIComponent(useLocation().search);
   // 오라클 서버에서 받아온 정보 담기
-  const [listBody,setListBody] = useState([]);
+  // {} : 객체리터럴이다 - 클래스
+  const [listBody,setListBody] = useState([]);  // 배열 타입 [{},{},{}] -> List<Map>, List<VO>
   // qna_type구분 상수값 - 라벨
   const[types]= useState(['전체','일반','결제','양도','회원','수업']);
   // qna_type 상태관리 위해 선언
@@ -31,7 +32,8 @@ const KhQnAListPage = ({authLogic}) => {
     setTTitle(element);
   },[]);  // 의존배열이 비었으므로 한 번 메모이제이션 된 함수값을 계속 기억해둔다
 
-
+  // 일반함수 정의하는 것과 useEffect에서 정의하는 것 사이의 차이점에 대해 나는 설명할 수 있다
+  // async 있고 없고는 고려대상이 아니다 await은 논외
   useEffect(() => {
     const qnaList = async() =>{
       // 콤보박스 내용 -> 제목, 내용, 작성자 중 하나
@@ -68,24 +70,35 @@ const KhQnAListPage = ({authLogic}) => {
         const obj = {
           qna_bno: item.QNA_BNO,
           qna_type: item.QNA_TYPE,
-          qna_title: item.QNA_TITLE,
+          title: item.QNA_TITLE,
           mem_name: item.MEM_NAME,
           qna_date: item.QNA_DATE,
           qna_hit: item.QNA_HIT,
+          qna_secret : JSON.parse(item.QNA_SECRET), // 문자열"false" -> false가 된다
+          file: item.FILE_NAME,
+          comment: item.COMM_NO,
         }
 
         list.push(obj);
       })
-
-      setListBody(list);
+      // 데이터 셋에 변화에 따라 리렌더링 할 것과 기존에 DOM을 그냥 출력하는 것 - 비교 알고리즘
+      setListBody(list);  // listBody[1] - 일반변수로 선언하는 것과 훅을 선언하는 것과의 차이점에 대해 설명 할 수 있다
     }
+
     qnaList();
   },[setListBody, setTTitle,  page, search]);
 
   //listItemsElements 클릭이벤트 처리시 사용
   const getAuth = (listItem) => {
     console.log(listItem);
-
+    console.log(listItem.qna_bno)
+    console.log(listItem.qna_secret)
+    
+    if (listItem.qna_secret === false) {
+      navigate(`/qna/detail/?qna_bno=${listItem.qna_bno}`)
+    } else {
+      console.log("권한이 없습니다. | 비공개입니다.")
+    }
   }
 
 
@@ -93,10 +106,10 @@ const KhQnAListPage = ({authLogic}) => {
   const listHeaders = ["글번호","분류","제목", "작성자", "등록일", "조회수"];
   const HeaderWd = ["8%","8%","50%", "12%", "12%", "10%"];
 
-
+  // listBody는 상태 훅이다
   const listHeadersElements = listHeaders.map((listHeader, index) => 
   listHeader==='제목'?
-    <th key={index} style={{width:HeaderWd[index], paddingLeft:"40px", textAlign: 'center'}}>{listHeader}</th>
+    <th key={index} style={{width:HeaderWd[index], paddingLeft:"40px"}}>{listHeader}</th>
     :
     <th key={index} style={{width:HeaderWd[index], textAlign: 'center'}}>{listHeader}</th>
   )
@@ -106,20 +119,21 @@ const KhQnAListPage = ({authLogic}) => {
     return (
       <tr key={index} onClick={()=>{getAuth(listItem)}}>
         { Object.keys(listItem).map((key, index) => (
-          key==='secret'||key==='no'||key==='file'||key==='comment'? null
+          key==='secret'||key==='no'||key==='file'||key==='comment' ? null
           :
-          key==='date'?
-          <td key={index} style={{fontSize:'15px', textAlign: 'center'}}>{listItem[key]}</td>
-          :
-          key==='title'?
-          <td key={index}>            
-            {isNaN(listItem.file)&&<span><i style={{width:"15px", height:"15px"}} className={"fas fa-file-lines"}></i></span>}
-            {!isNaN(listItem.file)&&<span><i style={{width:"15px", height:"15px"}} className={"fas fa-image"}></i></span>}
-            &nbsp;&nbsp;{listItem[key]}
-            {listItem.comment?<span style={{fontWeight:"bold"}}>&nbsp;&nbsp;[답변완료]</span>:<span>&nbsp;&nbsp;[미답변]</span>}
-            {listItem.secret&&<span>&nbsp;&nbsp;<i className="fas fa-lock"></i></span>}</td>
-          :
-          <td key={index} style={{textAlign: 'center'}}>{listItem[key]}</td>
+            key==='date' ?
+              <td key={index} style={{fontSize:'15px', textAlign: 'center'}}>{listItem[key]}</td>
+            :
+              key==='title' ?
+                <td key={index}>            
+                  {isNaN(listItem.file)&&<span><i style={{width:"15px", height:"15px"}} className={"fas fa-file-lines"}></i></span>}
+                  {!isNaN(listItem.file)&&<span><i style={{width:"15px", height:"15px"}} className={"fas fa-image"}></i></span>}
+                  &nbsp;&nbsp;{listItem[key]}
+                  {listItem.comment?<span style={{fontWeight:"bold"}}>&nbsp;&nbsp;[답변완료]</span>:<span>&nbsp;&nbsp;[미답변]</span>}
+                  {listItem.secret&&<span>&nbsp;&nbsp;<i className="fas fa-lock"></i></span>}
+                </td>
+              :
+                <td key={index} style={{textAlign: 'center'}}>{listItem[key]}</td>
         ))}  
       </tr>
     )
