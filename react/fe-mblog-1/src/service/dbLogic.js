@@ -236,6 +236,27 @@ export const qnaListDB = (board) => {
   });
 };
 
+export const qnaDetailDB = (board) => {
+  console.log("qnaDetailDB 호출")
+  console.log(board)  // 키 이름이 대소문자인지 확인 <- 소문자로 해야한다(백엔드와 연동)
+
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(board);
+      // axios - 비동기 요청 처리
+      // [ajax - fetch(브라우저) - axios(NodeJS - oracle서버연동)]
+      const response = axios({// 3000번 서버에서 8000서버로 요청을 함 -> 네트워크(다른서버 - CORS이슈)
+        method: "GET",
+        url: process.env.REACT_APP_SPRING_IP + "reple/qnaDetail",
+        params: board, //쿼리스트링은 header에 담김 - get방식 // 스프링부트 사용 시 @RequestParam 사용
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 export const qnaInsertDB = (board) => {
   console.log("qnaInsertDB 호출")
   console.log(board)    // fileNames = ['man1.png', 'man2.png', ...]
@@ -274,7 +295,7 @@ export const qnaUpdateDB = (board) => {
   });
 };
 
-export const qnaDeleteDB = (qna_bno) => {
+export const qnaDeleteDB = (board) => {
   console.log("qnaDeleteDB 호출")
 
   return new Promise((resolve, reject) => {
@@ -282,7 +303,7 @@ export const qnaDeleteDB = (qna_bno) => {
       const response = axios({
         method: "GET", //@RequestParam
         url: process.env.REACT_APP_SPRING_IP + "reple/qnaDelete",
-        params: qna_bno, //post방식으로 전송시 반드시 data속성으로 파라미터 줄것
+        params: board, //post방식으로 전송시 반드시 data속성으로 파라미터 줄것
       });
       resolve(response);
     } catch (error) {

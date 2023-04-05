@@ -11,15 +11,20 @@ const RepleBoardHeader = ({detail, bno}) => {
   const boardDelete = async() => {
     console.log("qnaList 호출")
 
-    const res = await qnaDeleteDB({qna_bno: bno});
+    const board = {
+      qna_bno: bno,         // mybatis xml코드 내 #{qna_bno}
+    }
+
+    const res = await qnaDeleteDB(board);
     console.log(res)
 
-    navigate("/qna/list")
+    navigate("/qna/list?page=1")
   }
   const qnaList = () => {
     console.log("qnaList 호출")
 
-    navigate("/qna/list")
+    // 파라미터로 받은 페이지 번호가 돌아갈 페이지 정보이다
+    navigate("/qna/list?page=1")
   }
   return (
     <div>

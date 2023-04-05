@@ -64,12 +64,55 @@ public class RepleBoardDao {
 		logger.info("result : " + result);
 	}
 
-	public int qnaDelete(int qna_bno) {
+	public int qnaDelete(Map<String,Object> pMap) {
 		logger.info("qnaDelete 호출");
 		int result = 0;
 
-		result = sqlSessionTemplate.delete("qnaDelete", qna_bno);
+		result = sqlSessionTemplate.delete("qnaDelete", pMap);
 		logger.info(result);
+
+		if (result == 1) {
+			result = sqlSessionTemplate.delete("fileDelete", pMap);
+		}
+
+		return result;
+	}
+
+	public List<Map<String, Object>> qnaDetail(Map<String, Object> pMap) {
+		logger.info("qnaDetail 호출");
+		List<Map<String,Object>> qList = null;
+
+		qList = sqlSessionTemplate.selectList("qnaDetail", pMap);
+
+		return qList;
+	}
+	public void qnaHit(Map<String, Object> pMap) {
+		logger.info("qnaHit 호출");
+		logger.info(pMap);
+		int result = 0;
+
+		// qna 게시물 조회
+		pMap.put("id", "qna");
+
+		result = sqlSessionTemplate.update("qnaHit", pMap);
+		logger.info("result : " + result);
+	}
+
+	public List<Map<String, Object>> fileList(Map<String, Object> pMap) {
+		logger.info("fileList 호출");
+		List<Map<String,Object>> fList = null;
+
+		fList = sqlSessionTemplate.selectList("fileList", pMap);
+
+		return fList;
+	}
+
+	public int qnaUpdate(Map<String, Object> pMap) {
+		logger.info("qnaUpdate 호출");
+		int result = 0;
+
+		result = sqlSessionTemplate.update("qnaUpdate", pMap);
+		logger.info("result : " + result);
 
 		return result;
 	}

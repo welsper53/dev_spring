@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.example.mblog1.dao.RepleBoardDao;
+import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +123,8 @@ public class RepleBoardLogic {
 				bos.close();
 
 				// 여기까지는 임시 파일 쓰기 처리였고, 이 다음에는 mblog_file테이블에 insert될 정보를 초기화 해준다
-				d_size = Math.floor((file.length()/(1024.0*1024.0)) * 10) / 10;
+//				d_size = Math.floor((file.length()/(1024.0*1024.0)) * 10) / 10;
+				d_size = Math.floor((file.length()/1024.0) * 10) / 10;
 				logger.info("d_size : " + d_size);
 				logger.info("filename : " + filename);
 				logger.info("fullPath : " + fullPath);
@@ -147,11 +149,58 @@ public class RepleBoardLogic {
 		return temp;
 	}
 
-	public int qnaDelete(int qna_bno) {
+	public int qnaDelete(Map<String,Object> pMap) {
 		logger.info("qnaDelete 호출");
 		int result = 0;
 
-		result = repleBoardDao.qnaDelete(qna_bno);
+		result = repleBoardDao.qnaDelete(pMap);
+		logger.info(result);
+
+		return result;
+	}
+
+	// 한 건만 가져오는 데 왜 List<Map>인가요? 그냥 Map<>으로 하면 안되나요?
+	// => DataSet변화 [{qna}, {fileListt}, {commentList}]
+	public List<Map<String, Object>> qnaDetail(Map<String, Object> pMap) {
+		logger.info("qnaDetail 호출");
+		List<Map<String,Object>> bList = null;
+		int qna_bno = 0;
+
+		// int 타입으로 형변환
+		if (pMap.get("qna_bno") != null) {
+			qna_bno = Integer.parseInt(pMap.get("qna_bno").toString());
+			pMap.put("qna_bno", qna_bno);
+		}
+
+		bList = repleBoardDao.qnaDetail(pMap);
+
+		// 댓글 처리 추가
+		// insert here
+		// 댓글 처리 추가
+
+		// 이미지 파일이 있는지?
+		if (bList !=null && bList.size() == 1) {
+			List<Map<String,Object>> fileList = repleBoardDao.fileList(pMap);
+
+			if (fileList != null && fileList.size() > 0) {
+				bList.addAll(fileList);
+			}
+		}
+
+		// 게시물 조회수 증가
+		if (bList.size() > 0) {
+			logger.info("게시물 조회수 증가");
+			repleBoardDao.qnaHit(pMap);
+		}
+
+		return bList;
+	}
+
+	public int qnaUpdate(Map<String, Object> pMap) {
+		logger.info("qnaUpload 호출");
+		int result = 0;
+
+		result = repleBoardDao.qnaUpdate(pMap);
 		logger.info(result);
 
 		return result;

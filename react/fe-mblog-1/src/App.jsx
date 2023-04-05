@@ -25,6 +25,7 @@ import RepleBoardWriteForm from './component/repleboard/RepleBoardWriteForm';
 import KhQnAListPage from './component/repleboard/KhQnAListPage';
 import KhQnADetailPage from './component/repleboard/KhQnADetailPage';
 import KhQnAWriteForm from './component/repleboard/KhQnAWriteForm';
+import KhQnAUpdatePage from './component/repleboard/KhQnAUpdatePage';
 
 function App({authLogic, imageUploader}) {
   console.log('App')
@@ -102,7 +103,9 @@ function App({authLogic, imageUploader}) {
       <div style={{height: '100vh'}}>
         {toastStatus.status && <Toast />}
         <Routes>{/* 정확히 그 규칙을 따라달라는 exact={true} */}
-        <Route path='/' exact={true} element={<HomePage />} />
+          <Route path='/' exact={true} element={<HomePage authLogic={authLogic} />} />
+          <Route path='/home' exact={true} element={<HomePage authLogic={authLogic} />} />
+          
           {/* <Route path='/login' exact={true} element={<LoginPage />} /> */}
           <Route path='/login' exact={true} element={<KhLoginPage authLogic={authLogic}/>} />
           {/* <Route path='/auth/signup' exact={true} element={<SignupPage authLogic={authLogic}/>} /> */}
@@ -110,20 +113,21 @@ function App({authLogic, imageUploader}) {
           <Route path='/auth/emailVerified' exact={true} element={<EmailVerifiedPage authLogic={authLogic} />} />
           <Route path='/auth/findEmail' exact={true} element={<FindEmailPage />} />
           <Route path='/auth/resetPwd' exact={true} element={<ResetPwdPage authLogic={authLogic} />} />
-          <Route path='/reple/board' exact={true} element={<RepleBoardPage  />} />
-          <Route path='/reple/boarddetail/*'  element={<RepleBoardDetail  />} />
-          <Route path='/reple/boardwrite' exact={true}  element={<RepleBoardWriteForm  />} />
-          <Route path='/dept/:gubun' element={<DeptPage  imageUploader={imageUploader} />} />
+          <Route path='/auth/kakao/callback' exact={true} element={<KakaoRedirectHandler />} />
 
-          <Route path='/qna/list' exact={true} element={<KhQnAListPage  />} />
-          <Route path='/qna/detail/*'  element={<KhQnADetailPage  />} />
+          <Route path='/reple/board' exact={true} element={<RepleBoardPage authLogic={authLogic} />} />
+          <Route path='/reple/boarddetail/*'  element={<RepleBoardDetail authLogic={authLogic} />} />
+          <Route path='/reple/boardwrite' exact={true}  element={<RepleBoardWriteForm  />} />
+          <Route path='/dept/:gubun' element={<DeptPage  imageUploader={imageUploader}  authLogic={authLogic} />} />
+
+          <Route path='/qna/list' exact={true} element={<KhQnAListPage authLogic={authLogic} />} />
+          <Route path='/qna/detail/*'  element={<KhQnADetailPage authLogic={authLogic} />} />
           <Route path='/qna/write/*' element={<KhQnAWriteForm authLogic={authLogic}  />} />
           {/* 해시값 처리 - useParams() 훅 사용 */}
-          <Route path='/qna/update/:bno' exact={true}  element={<KhQnAWriteForm  />} />
+          <Route path='/qna/update/:bno' element={<KhQnAUpdatePage authLogic={authLogic} />} />
 
           {/* 컴포넌트 함수를 호출하는 것이다 - 마운트 - return호출되었다 */}
           <Route path='/deptdetail/:deptno' element={<DeptDetail  imageUploader={imageUploader} />} />
-          <Route path='/auth/kakao/callback' exact={true} element={<KakaoRedirectHandler />} />
           <Route path='/profile' exact={true} element={<Profile />} />
           <Route path='/member' exact={true} element={<MemberPage imageUploader={imageUploader}/>} />
         </Routes>

@@ -1,9 +1,10 @@
 package com.example.mblog1.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,11 @@ import com.example.mblog1.logic.RepleBoardLogic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +38,7 @@ public class RepleBoardController {
     Logger logger = LogManager.getLogger(RepleBoardController.class);
     @Autowired
     private RepleBoardLogic repleBoardLogic = null;
+
     @PostMapping("qnaInsert")
     public String qnaInsert(@RequestBody Map<String,Object> pMap) {//리액트에서 body에 {}객체리터럴로 넘겨준 정보를 Map이나 VO담을 수 있다
         logger.info("qnaInsert");//해당 메소드 호출 여부 찍어보기
@@ -149,7 +156,7 @@ public class RepleBoardController {
         String filename = null;
         if(!file_name.isEmpty()) {
             filename = file_name.getOriginalFilename();
-            String saveFolder = "E:\\workspace_sts\\mblog-1\\src\\main\\webapp\\pds";
+            String saveFolder = "D:\\dev_spring\\intelliJ\\mblog-1\\src\\main\\webapp\\pds";
             String fullPath = saveFolder+"\\"+filename;
             try {
                 //File객체는 파일명을 객체화 해주는 클래스임 - 생성되었다고 해서 실제 파일까지 생성되는 것이 아님
@@ -171,6 +178,35 @@ public class RepleBoardController {
         return temp;
     }
 
+    // 이미지 다운로드 처리
+    @GetMapping("imageDownload")
+    public ResponseEntity<Resource> imageDownload (@RequestParam(value = "imageName") String imageName) {
+        logger.info("imageDownload 호출");
+        String fileFolder = "D:\\dev_spring\\intelliJ\\mblog-1\\src\\main\\webapp\\pds";
+
+        try {
+            File file = new File(fileFolder, URLDecoder.decode(imageName, "UTF-8"));
+            HttpHeaders header = new HttpHeaders();
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment:fileFolder" + imageName);
+            header.add("Cache-Control"," no-cache, no-store, must-revalidate");
+            header.add("Pragma", "no-cache");
+            header.add("Expires", "0");
+
+            Path path = Paths.get(file.getAbsolutePath());
+            // 이미지 리소스를 읽어서 담기
+            ByteArrayResource resource = new ByteArrayResource((Files.readAllBytes(path)));
+
+            return ResponseEntity.ok()                  // 200
+                    .headers(header)                    // 헤더 설정
+                    .contentLength(file.length())       // 파일 크기
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))  // 이미지를 브라우저가 로딩하지 못하게 한다
+                    .body(resource);
+        } catch (Exception e) {
+            logger.info(e.toString());
+            return null;
+        }
+    }
+
     // http://localhost:8000/reple/qnaList?content=제목
     // http://localhost:8000/reple/qnaList?content=제목&condition=작성자
     @GetMapping("qnaList")
@@ -186,15 +222,58 @@ public class RepleBoardController {
         return temp;
     }
 
+    // http://localhost:8000/reple/qnaList?content=제목
+    // http://localhost:8000/reple/qnaList?content=제목&condition=작성자
+    @GetMapping("qnaDetail")
+    public String qnaDetail(@RequestParam Map<String,Object> pMap) {
+        logger.info("qnaDetail 호출");
+        logger.info("pMap ===> " + pMap);
+        List<Map<String,Object>> bList = null;
+
+        bList = repleBoardLogic.qnaDetail(pMap);
+
+        Gson g = new Gson();
+        String temp = g.toJson(bList);
+
+        return temp;
+    }
+
+    // 이미지 파일 삭제하기는 각자 해보세요
+    // 여기서는 qna테이블 레코드만 삭제 구현합니다.
     @GetMapping("qnaDelete")
-    public int qnaDelete(int qna_bno) {
+    public int qnaDelete(@RequestParam Map<String,Object> pMap) {
         logger.info("qnaDelete 호출");
-        logger.info("qna_bno ===> " + qna_bno);
+        logger.info("pMap ===> " + pMap);
 
         int result = 0;
 
-        result = repleBoardLogic.qnaDelete(qna_bno);
+        // 화면에서 숫자 타입 받아올 때 형전환 처리 할 것
+        // 안하면 부적합한 열유형 관련 에러 메시지 발생하니 주의할 것!!
+        if (pMap.get("qno_bno") != null) {
+            int temp = Integer.parseInt(pMap.get("qno_bno").toString());
+            pMap.put("qno_bno", temp);
+        }
+
+        result = repleBoardLogic.qnaDelete(pMap);
         logger.info(result);
+
+        return result;
+    }
+
+
+    @PostMapping("qnaUpdate")
+    public int qnaUpdate(@RequestBody Map<String,Object> pMap) {
+        logger.info("qnaUpload 호출 성공");
+        logger.info(pMap);
+
+        // 화면에서 숫자 타입 받아올 때 형전환 처리 할 것
+        // 안하면 부적합한 열유형 관련 에러 메시지 발생하니 주의할 것!!
+        if (pMap.get("qno_bno") != null) {
+            int temp = Integer.parseInt(pMap.get("qno_bno").toString());
+            pMap.put("qno_bno", temp);
+        }
+
+        int result = repleBoardLogic.qnaUpdate(pMap);
 
         return result;
     }

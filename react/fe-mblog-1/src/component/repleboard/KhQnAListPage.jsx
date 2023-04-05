@@ -130,7 +130,7 @@ const KhQnAListPage = ({authLogic}) => {
                   {!isNaN(listItem.file)&&<span><i style={{width:"15px", height:"15px"}} className={"fas fa-image"}></i></span>}
                   &nbsp;&nbsp;{listItem[key]}
                   {listItem.comment?<span style={{fontWeight:"bold"}}>&nbsp;&nbsp;[답변완료]</span>:<span>&nbsp;&nbsp;[미답변]</span>}
-                  {listItem.secret&&<span>&nbsp;&nbsp;<i className="fas fa-lock"></i></span>}
+                  {listItem.qna_secret&&<span>&nbsp;&nbsp;<i className="fas fa-lock"></i></span>}
                 </td>
               :
                 <td key={index} style={{textAlign: 'center'}}>{listItem[key]}</td>

@@ -41,8 +41,32 @@
 		</if>
 		ORDER BY q.qna_bno desc
 	</select>
+
+	<select id="qnaDetail" parameterType="java.util.HashMap" resultType="map">
+		SELECT
+			q.qna_bno, q.qna_title, q.qna_content
+			, q.qna_type, q.qna_hit, q.qna_date, q.qna_secret
+			, m.mem_name, m.mem_no, c.comm_no
+		FROM qna q, member230324 m
+		   , ( SELECT count(comm_no) comm_no, qna_bno FROM qna_comment
+			  	GROUP BY qna_bno
+			 ) c
+		WHERE q.mem_no = m.mem_no
+		  AND q.qna_bno = c.qna_bno(+)
+		<!-- 회원고유번호별 조건검색 시 사용 -->
+		<if test='mem_no != null'>
+			AND m.mem_no = #{mem_no}
+		</if>
+		<!-- 글번호 조건검색 시 사용 -->
+		<if test='qna_bno != null'>
+		<!-- setNull(1, 1111)에러 타입, 부적합한 열유형
+			Integer.parseInt()
+		-->
+			AND q.qna_bno = #{qna_bno}
+		</if>
+	</select>
 <!--
-@RequestParam - Map타입이 올 수있다 - GET방식 요청 - 요청 header담김 - 인터셉트 - 캐시에 있는 정보가 다시 출력될수 있다. 
+@RequestParam - Map타입이 올 수있다 - GET방식 요청 - 요청 header담김 - 인터셉트 - 캐시에 있는 정보가 다시 출력될수 있다.
 :문제점: 노출 -URL - 보안취약 - 조회
 @RequestBody - POST방식 요청 - 단위테스트 불가함 -그러니까 postman 테스트 가능함 - 요청 body담김 - 인터셉트 불가함 - 무조건 서버로 전달
 :VO Map 원시형 타입 모두 가능함
@@ -56,7 +80,7 @@ qna_secret 에는 비번을 입력 받음
 화면에서 가져올 컬럼의 종류는 몇가지 인가요?
 
 세션이나 쿠키에서 또는 세션스토리지에서 가져와야 하는 컬럼이 있을까요?
-상수로 넣을 수 있는 (또는 넣어야 하는) 컬럼이 존재하나요? 
+상수로 넣을 수 있는 (또는 넣어야 하는) 컬럼이 존재하나요?
 만일 존재한다면 어떤 컬럼인지 말해 보세요
 하나 더
 작성자는 입력 받도록 화면을 그려야 할까요?
@@ -74,17 +98,53 @@ qna_secret 에는 비번을 입력 받음
 
 
 	<update id="qnaUpdate" parameterType="map">
-		UPDATE qna SET qna_title = #{qna_title}, qna_content = #{qna_content}
-		<where>
-			<if test="qna_title!=null and qna_title.length>0">
-				AND qna_title = #{qna_title}
+		UPDATE qna
+			SET
+		    <if test="qna_title != null || qna_title.length > 0">
+				qna_title = #{qna_title},
 			</if>
-		</where>
+		    <if test="qna_content != null || qna_content.length > 0">
+				qna_content = #{qna_content},
+			</if>
+		    <if test="qna_type != null || qna_type.length > 0">
+				qna_type = #{qna_type},
+			</if>
+		    <if test="qna_secret != null || qna_secret.length > 0">
+				qna_secret = #{qna_secret},
+			</if>
+		    	qna_update = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI":SS')
+		WHERE qna_bno = #{qna_bno}
 	</update>
 
-	<delete id="qnaDelete" parameterType="int">
+	<!--
+		화면에서 숫자 타입 받아올 때 형전환 처리 할 것
+		안하면 부적합한 열유형 관련 에러 메시지 발생하니 주의할 것!!
+	-->
+	<delete id="qnaDelete" parameterType="map">
 		DELETE FROM qna WHERE qna_bno = #{qna_bno}
 	</delete>
+
+	<!--
+		이 쿼리문은 언제 어디서 왜 호출되야 할까요?
+		Controller Logic Dao 다 필요한 경우가 있고 - 글쓰기
+		Controller Logic까지만 필요한 경우가 있고 - imageUpload
+		Dao 만 필요한 경우가 있다 - 조회수 증가 하기가 여기에 해당된다
+		위치
+		언제 조회수 증가 함수를 호출하면 될까요?
+		- 아 그래서 qnaList와 qnaDetail 나누기 잘 했네
+	-->
+	<update id="qnaHit" parameterType="map">
+		<choose>
+			<when test='id.equals("qna")'>
+				UPDATE qna SET qna_hit = qna_hit + 1
+				WHERE qna_bno = #{qna_bno}
+			</when>
+			<when test='id.equals("notice")'>
+				UPDATE notice SET not_hit = not_hit + 1
+				WHERE not_bno = #{not_bno}
+			</when>
+		</choose>
+	</update>
 
 
 <!--==================================================================================-->
@@ -118,6 +178,10 @@ qna_secret 에는 비번을 입력 받음
 			WHERE file_name = LTRIM(#{item.file_name})
 		</foreach>
 	</update>
+
+	<delete id="fileDelete" parameterType="map">
+		DELETE FROM mblog_file WHERE qna_bno = #{qna_bno}
+	</delete>
 
 	<!--==================================================================================-->
 </mapper>

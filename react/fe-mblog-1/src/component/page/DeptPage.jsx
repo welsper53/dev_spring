@@ -24,7 +24,7 @@ const Img = styled.img`
   object-fit: cover;
 `
 
-const DeptPage = ({imageUploader}) => {
+const DeptPage = ({authLogic, imageUploader}) => {
   // Route path="/dept/:gubun"
   // 디폴트 없고 부서등록이 성공하면 1을 돌려준다
   const gubun = useParams()
@@ -189,7 +189,7 @@ const DeptPage = ({imageUploader}) => {
 
   return (
     <>
-      <BlogHeader />
+      <BlogHeader authLogic={authLogic} />
       <div className='container'>
         <div className="page-header">
           <div className="page-header">
