@@ -1,16 +1,23 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: welsper52
-  Date: 2023-04-18
-  Time: 오후 9:49
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>user-index 페이지</title>
+    <meta charset="UTF-8">
+    <title>User페이지</title>
 </head>
 <body>
-user-index 페이지
+<div class="container center-contents">
+    <div class="row">
+        <h1 class="title display-5 text-danger"> User페이지입니다. </h1>
+    </div>
+
+    <div class="links">
+        <div class="link">
+            <a href="/"> 메인 </a>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

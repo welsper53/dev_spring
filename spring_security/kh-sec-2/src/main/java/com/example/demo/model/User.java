@@ -24,6 +24,7 @@ public class User {
     private Timestamp createDate;
 
     // 회원가입에 사용할 생성자 추가 - 테이블 자동생성된다
+    public User() {}
     @Builder
     public User(String username, String password, String email
             , String role, Timestamp createDate) {
