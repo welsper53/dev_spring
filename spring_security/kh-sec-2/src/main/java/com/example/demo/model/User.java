@@ -24,7 +24,10 @@ public class User {
     private Timestamp createDate;
 
     // 회원가입에 사용할 생성자 추가 - 테이블 자동생성된다
+    // @Builder 망하는 이유는 들고 온 정보를 모두 초기화 해버리기 때문
     public User() {}
+    // 초기화 시 아래 코드를 사용한다
+    // UserRepository의 findByUsername으로 찾아낸 정보로 초기화가 된다
     @Builder
     public User(String username, String password, String email
             , String role, Timestamp createDate) {

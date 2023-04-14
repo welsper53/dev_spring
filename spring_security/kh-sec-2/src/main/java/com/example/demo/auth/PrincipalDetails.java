@@ -41,17 +41,21 @@ import lombok.Data;
  * Oauth2LoginAuthenticationFilter  :   소셜로그인 -> Oauth2LoginAuthenticationToken
  */
 @Data
-public class PrincipalDetails implements UserDetails, OAuth2User{ //오버라이드 해줌
+public class PrincipalDetails implements UserDetails, OAuth2User{   //오버라이드 해줌
     Logger logger = LogManager.getLogger(PrincipalDetails.class);
-    private User user; //콤포지션
+    private User user;      //콤포지션
+
     //구글 로그인시 구글서버에서 넣어주는 정보가 Map의 형태인데 그것을 받을 Map변수 선언하는 것임
     private Map<String,Object> attributes;
+
     //일반로그인시 사용하는 생성자
     public PrincipalDetails(User user) {
         this.user = user;
     }
-    //OAuth로그인시 사용하는 생성자임
-    //그런데 어떻게 User정보를 갖게 되냐면 attributes를 통해서 User를 생성해 준다
+
+    // OAuth로그인시 사용하는 생성자임
+    // 그런데 어떻게 User정보를 갖게 되냐면 attributes를 통해서 User를 생성해 준다
+    // 2번째 파라미터는 구글 인증 후 프로필 정보를 담는다
     public PrincipalDetails(User user, Map<String,Object> attributes) {
         this.user = user;
         this.attributes = attributes;

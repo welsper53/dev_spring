@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class PrincipalDetailsService implements UserDetailsService {
     Logger logger = LogManager.getLogger(PrincipalDetailsService.class);
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository;                  // mysql에서 꺼내와야 하니까
 
 
     // 아래 파라미터 username은 화면에서 사용하는, 즉 input type의 name과 반드시 일치해야함
@@ -31,11 +31,12 @@ public class PrincipalDetailsService implements UserDetailsService {
 
         // jpa query method로 검색하기 - mysql
         // mysql서버에 요청하는 코드
-        User userEntity = userRepository.findByUsername(username); // 검색하기
+        // User타입은 Authentication에 직접 담을 수 없다
+        User userEntity = userRepository.findByUsername(username);      // 검색하기 (<- select문 대신 생성해준다)
         logger.info(userEntity);                // 사용자가 입력한 이름
         logger.info(userEntity.getRole());      // 사용자의 규칙 (ROLE_ADMIN, ROLE_USER ...)
 
-        if(userEntity != null) {                //DB에서 찾아온 정보를 들고 있으면
+        if(userEntity != null) {                            //DB에서 찾아온 정보를 들고 있으면
             return new PrincipalDetails(userEntity);        //Authentication에 담을 수 있는 타입으로 변환
         }
 
